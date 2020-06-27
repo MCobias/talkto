@@ -1,12 +1,10 @@
 <?php
 /**
- * @package    block Fale com o tutor
- * @copyright  2019 UniProjecao
- * @author     Marcelo Cobias <marcelo.amorim@projecao.br>
+ * @package    block talk to
+ * @copyright  2020 Marcelo Cobias
+ * @author     Marcelo Cobias <marcelocobias18@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-
 
 @$ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']);
 

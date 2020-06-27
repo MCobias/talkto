@@ -10,10 +10,10 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
 
-class block_fale_com_tutor extends block_base {
+class block_talk_to extends block_base {
 
     public function init() {
-        $this->title = get_string('pluginname', 'block_fale_com_tutor');
+        $this->title = get_string('pluginname', 'block_talk_to');
     }
 
     public function get_content() {
@@ -66,7 +66,7 @@ class block_fale_com_tutor extends block_base {
                 $name = explode(" ", $USER->firstname);
 
                 $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                $this->content->text .= '<span class="pull-right"><a class="fale_com_tutor_link">Eu sou o Tutor</a></span>';
+                $this->content->text .= '<span class="pull-right"><a class="talk_to_link">Eu sou o Tutor</a></span>';
                 $this->content->text .= '</div">';
 
                 $this->content->text .= '</li>';
@@ -76,12 +76,11 @@ class block_fale_com_tutor extends block_base {
             }
         }
 
-        //Lista usurios com perfil de tutor
+        //Lista de usuarios com perfil de tutor
         list($usql, $uparams) = $DB->get_in_or_equal('4');
         $params = array($COURSE->id, CONTEXT_COURSE);
         $coursehasgroups = groups_get_all_groups($COURSE->id);
         //print_r(array_values ($coursehasgroups));
-
 
         $select = 'SELECT DISTINCT u.id, u.firstname, u.lastname, u.lastaccess, u.picture, u.description, u.email ';
         $from = 'FROM {role_assignments} ra
@@ -136,7 +135,7 @@ class block_fale_com_tutor extends block_base {
                             'recipientid' => $teacher->id
                         );
 
-                        $url = new moodle_url('/blocks/fale_com_tutor/message.php', $urlparams);
+                        $url = new moodle_url('/blocks/talk_to/message.php', $urlparams);
 
                         $picture = '';
                         $picture = new user_picture($teacher);
@@ -174,7 +173,7 @@ class block_fale_com_tutor extends block_base {
                         setcookie('fale_tutor_img_' . $urlparams['courseid'], $profile);
 
                         $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                        $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="fale_com_tutor_link">Fale com o tutor</a></span>';
+                        $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talk_to_link">Fale com o tutor</a></span>';
                         $this->content->text .= '</div">';
 
                         $this->content->text .= '</li>';
@@ -195,7 +194,7 @@ class block_fale_com_tutor extends block_base {
                         'recipientid' => $teacher->id
                     );
 
-                    $url = new moodle_url('/blocks/fale_com_tutor/message.php', $urlparams);
+                    $url = new moodle_url('/blocks/talk_to/message.php', $urlparams);
 
                     $picture = '';
                     $picture = new user_picture($teacher);
@@ -229,7 +228,7 @@ class block_fale_com_tutor extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="fale_com_tutor_link">Fale com o tutor</a></span>';
+                    $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talk_to_link">Fale com o tutor</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';
@@ -261,7 +260,7 @@ class block_fale_com_tutor extends block_base {
         }
 
         //$PAGE->requires->css('/blocks/menu_mural_virtual/style.css');
-        $PAGE->requires->yui_module('moodle-block_fale_com_tutor-form','M.block_fale_com_tutor.form.init');
+        $PAGE->requires->yui_module('moodle-block_talk_to-form','M.block_talk_to.form.init');
         return $this->content;
     }
 
