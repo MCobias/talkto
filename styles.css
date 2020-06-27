@@ -1,0 +1,119 @@
+.block_talk_to {
+    width:300px;
+    overflow-x:hidden;
+    margin-top: 11%;
+    margin-bottom: 0;
+    float: right;
+}
+
+@media only screen and (min-width: 480px) {
+
+}
+
+@media only screen and (min-width: 600px) {
+
+}
+
+@media only screen and (min-width: 768px) {
+
+}
+
+@media only screen and (min-width: 1024px) {
+    .block_perfil_supervisor {
+        width:300px;
+        overflow-x:hidden;
+        margin-top: 11%;
+        margin-bottom: 0;
+        float: right;
+        margin-right: 0%;
+    }
+}
+
+.block_talk_to .modal-perfil {
+    width:500px;
+    height:auto;
+    margin-top: -30px;
+    margin-bottom: 0px;
+    right: 0;
+    left: 40%;
+    position: fixed;
+}
+
+.block_talk_to .alert-danger {
+    width: 150px;
+    margin-top: 45px;
+}
+
+.block_talk_to .alert-danger h8 {
+    font-weight: bold;
+}
+
+.block_talk_to .alert-danger p {
+    border-top: 1px solid #A91D22;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.block_talk_to .box-content ul.boxes .box {
+    width: 250px;
+    list-style-type: none;
+    padding: 7px 10px 5px 10px;
+    vertical-align: top;
+    border-top: 0.45em solid transparent;
+    box-shadow: 2px 4px 5px 0 #bdbdbd;
+}
+
+.block_talk_to .box-content ul.boxes li.box p {
+    font-size: 20px;
+    text-transform: none;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+.block_talk_to .box-content ul.boxes li.box img {
+    width: 100px;
+    height: auto;
+    margin-right: 0;
+    margin-left: -65px;
+    padding-top: 10px;
+    padding-bottom: 40px;
+}
+
+.block_talk_to .box-content ul.boxes li.box .row {
+    display: inline-block;
+    margin-top: 110px;
+}
+
+.block_talk_to .box-content ul.boxes li.box span {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.block_talk_to .box-content ul.boxes .box {
+    border-top-color: #302F51;
+    background-color: #CAE4FB;
+    border-radius: 0;
+}
+
+#talk_to_form {
+    padding: 2em;
+}
+
+#talk_to_form .mform .fitem div.fitemtitle {
+    width: 8em;
+}
+
+#talk_to_form .mform .fitem .felement {
+    margin-left: 10em;
+}
+
+#talk_to_form textarea {
+    width: 80%;
+}
+
+.talk_to_confirm {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 1em;
+}
