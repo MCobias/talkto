@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_talk_to;
+namespace block_talkto;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,6 +34,6 @@ class message_failed_exception extends \moodle_exception {
      * Set exception message.
      */
     public function __construct() {
-        parent::__construct('messagefailed', 'block_talk_to');
+        parent::__construct('messagefailed', 'block_talkto');
     }
 }

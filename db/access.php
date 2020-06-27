@@ -10,7 +10,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'block/talk_to:myaddinstance' => array(
+    'block/talkto:myaddinstance' => array(
     'captype' => 'write',
     'contextlevel' => CONTEXT_SYSTEM,
     'archetypes' => array(
@@ -20,7 +20,7 @@ $capabilities = array(
     'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
 
-    'block/talk_to:addinstance' => array(
+    'block/talkto:addinstance' => array(
     'riskbitmask' => RISK_SPAM | RISK_XSS,
 
     'captype' => 'write',

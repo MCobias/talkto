@@ -1,22 +1,22 @@
 /**
- * Defines the javascript module for the talk_to block
+ * Defines the javascript module for the talkto block
  *
- * @package    block_talk_to
+ * @package    block_talkto
  * @author      Mark Johnson <mark@barrenfrozenwasteland.com>
  * @copyright   2013 Mark Johnson
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-M.block_talk_to = M.block_talk_to || {};
+M.block_talkto = M.block_talkto || {};
 
-M.block_talk_to.form = {
+M.block_talkto.form = {
     overlay: null,
 
     init: function() {
         // Create an overlay (like the ones that Help buttons display) for
         // showing output from asynchronous call.
 
-        Y.all('.talk_to_link').on('click', this.show_form, this);
+        Y.all('.talkto_link').on('click', this.show_form, this);
     },
 
     /**
@@ -57,7 +57,7 @@ M.block_talk_to.form = {
                     response = Y.JSON.parse(o.responseText);
                     this.show_response(response.output);
                     if (response.script.length > 0) {
-                        script = Y.one('#talk_to_dynamic_script');
+                        script = Y.one('#talkto_dynamic_script');
                         if (script) {
                             script.remove();
                         }
@@ -66,7 +66,7 @@ M.block_talk_to.form = {
                         el.textContent = response.script;
                         document.body.appendChild(el);
                     }
-                    Y.one('#mform1').on('submit', M.block_talk_to.form.submit_form);
+                    Y.one('#mform1').on('submit', M.block_talkto.form.submit_form);
                     Y.one('#id_message').focus(); // Focus the message box
                 },
                 failure: function(id, o) {
@@ -87,10 +87,10 @@ M.block_talk_to.form = {
             on: {
                 success: function(id, o) {
                     response = Y.JSON.parse(o.responseText);
-                    M.block_talk_to.form.show_response(response.output);
+                    M.block_talkto.form.show_response(response.output);
                 },
                 failure: function(id, o) {
-                    M.block_talk_to.form.show_response(o.responseText);
+                    M.block_talkto.form.show_response(o.responseText);
                 }
             }
         });

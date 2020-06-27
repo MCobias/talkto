@@ -10,10 +10,10 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
 
-class block_talk_to extends block_base {
+class block_talkto extends block_base {
 
     public function init() {
-        $this->title = get_string('pluginname', 'block_talk_to');
+        $this->title = get_string('pluginname', 'block_talkto');
     }
 
     public function get_content() {
@@ -66,7 +66,7 @@ class block_talk_to extends block_base {
                 $name = explode(" ", $USER->firstname);
 
                 $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                $this->content->text .= '<span class="pull-right"><a class="talk_to_link">Eu sou o Tutor</a></span>';
+                $this->content->text .= '<span class="pull-right"><a class="talkto_link">Eu sou o Tutor</a></span>';
                 $this->content->text .= '</div">';
 
                 $this->content->text .= '</li>';
@@ -135,7 +135,7 @@ class block_talk_to extends block_base {
                             'recipientid' => $teacher->id
                         );
 
-                        $url = new moodle_url('/blocks/talk_to/message.php', $urlparams);
+                        $url = new moodle_url('/blocks/talkto/message.php', $urlparams);
 
                         $picture = '';
                         $picture = new user_picture($teacher);
@@ -173,7 +173,7 @@ class block_talk_to extends block_base {
                         setcookie('fale_tutor_img_' . $urlparams['courseid'], $profile);
 
                         $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                        $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talk_to_link">Fale com o tutor</a></span>';
+                        $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talkto_link">Fale com o tutor</a></span>';
                         $this->content->text .= '</div">';
 
                         $this->content->text .= '</li>';
@@ -194,7 +194,7 @@ class block_talk_to extends block_base {
                         'recipientid' => $teacher->id
                     );
 
-                    $url = new moodle_url('/blocks/talk_to/message.php', $urlparams);
+                    $url = new moodle_url('/blocks/talkto/message.php', $urlparams);
 
                     $picture = '';
                     $picture = new user_picture($teacher);
@@ -228,7 +228,7 @@ class block_talk_to extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talk_to_link">Fale com o tutor</a></span>';
+                    $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talkto_link">Fale com o tutor</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';
@@ -260,7 +260,7 @@ class block_talk_to extends block_base {
         }
 
         //$PAGE->requires->css('/blocks/menu_mural_virtual/style.css');
-        $PAGE->requires->yui_module('moodle-block_talk_to-form','M.block_talk_to.form.init');
+        $PAGE->requires->yui_module('moodle-block_talkto-form','M.block_talkto.form.init');
         return $this->content;
     }
 

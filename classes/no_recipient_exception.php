@@ -22,7 +22,7 @@
  */
 
 
-namespace block_talk_to;
+namespace block_talkto;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -37,6 +37,6 @@ class no_recipient_exception  extends \moodle_exception {
      * @param int $recipientid
      */
     public function __construct($recipientid) {
-        parent::__construct('norecipient', 'block_talk_to', $recipientid);
+        parent::__construct('norecipient', 'block_talkto', $recipientid);
     }
 }

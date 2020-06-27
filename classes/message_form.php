@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_talk_to;
+namespace block_talkto;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -40,13 +40,13 @@ class message_form extends \moodleform {
         $strrequired = get_string('required');
 
         $header = get_string('messageheader',
-                             'block_talk_to',
+                             'block_talkto',
                              fullname($this->_customdata['recipient']));
         $mform->addElement('header', 'general', $header);
 
         $mform->addElement('textarea',
                             'message',
-                            get_string('messagetext', 'block_talk_to'),
+                            get_string('messagetext', 'block_talkto'),
                             array('rows' => 6, 'cols' => 60));
         $mform->setType('message', PARAM_TEXT);
 
@@ -61,7 +61,7 @@ class message_form extends \moodleform {
         $mform->addElement('hidden', 'courseid', $this->_customdata['courseid']);
         $mform->setType('courseid', PARAM_INT);
 
-        $mform->addElement('submit', 'send', get_string('send', 'block_talk_to'));
+        $mform->addElement('submit', 'send', get_string('send', 'block_talkto'));
 
     }
 
@@ -77,17 +77,17 @@ class message_form extends \moodleform {
             throw new no_recipient_exception($data->recipientid);
         }
 
-        $appendurl = get_config('block_talk_to', 'appendurl');
+        $appendurl = get_config('block_talkto', 'appendurl');
         if ($appendurl) {
-            $data->message .= "\n\n".get_string('sentfrom', 'block_talk_to', $data->referurl);
+            $data->message .= "\n\n".get_string('sentfrom', 'block_talkto', $data->referurl);
         }
 
         $eventdata = new \core\message\message();
-        $eventdata->component = 'block_talk_to';
+        $eventdata->component = 'block_talkto';
         $eventdata->name = 'message';
         $eventdata->userfrom = $USER;
         $eventdata->userto = $recipient;
-        $eventdata->subject = get_string('messagefrom', 'block_talk_to', fullname($USER));
+        $eventdata->subject = get_string('messagefrom', 'block_talkto', fullname($USER));
         $eventdata->fullmessage = $data->message;
         $eventdata->fullmessageformat = FORMAT_PLAIN;
         $eventdata->fullmessagehtml = '';

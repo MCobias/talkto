@@ -1,0 +1,10 @@
+{
+    "name": "moodle-block_talkto-form",
+    "builds": {
+        "moodle-block_talkto-form": {
+            "jsfiles": [
+                "talkto.js"
+            ]
+        }
+    }
+}

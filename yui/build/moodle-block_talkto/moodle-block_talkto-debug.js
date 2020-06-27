@@ -1,21 +1,21 @@
-YUI.add('moodle-block_talk_to', function (Y, NAME) {
+YUI.add('moodle-block_talkto', function (Y, NAME) {
 
-M.block_talk_to = M.block_talk_to || {}
+M.block_talkto = M.block_talkto || {}
 
-M.block_talk_to.form = {
+M.block_talkto.form = {
     overlay: '',
 
     init: function(Y) {
         this.Y = Y;
         // Create an overlay (like the ones that Help buttons display) for
         // showing output from asynchronous call.
-        html = '<a id="block_talk_to_output_header" href="#">'
+        html = '<a id="block_talkto_output_header" href="#">'
             +'<img src="'+M.util.image_url('t/delete', 'moodle')+'" /></a>';
         this.overlay_close = Y.Node.create(html);
         this.overlay = new Y.Overlay({
             headerContent: this.overlay_close,
             bodyContent: '',
-            id: 'block_talk_to_output',
+            id: 'block_talkto_output',
             width:'400px',
             visible : false,
             constrain : true
@@ -26,7 +26,7 @@ M.block_talk_to.form = {
         Y.on("key", this.hide_response, this.overlay_close, "down:13", this);
         this.overlay_close.on('click', this.hide_response, this);
 
-        Y.all('.talk_to_link').on('click', this.show_form, this);
+        Y.all('.talkto_link').on('click', this.show_form, this);
     },
 
     /**
@@ -66,7 +66,7 @@ M.block_talk_to.form = {
                     response = Y.JSON.parse(o.responseText);
                     this.show_response(response.output);
                     if (response.script.length > 0) {
-                        if (script = Y.one('#talk_to_dynamic_script')) {
+                        if (script = Y.one('#talkto_dynamic_script')) {
                             script.remove();
                         }
                         el = document.createElement('script');
@@ -74,7 +74,7 @@ M.block_talk_to.form = {
                         el.textContent = response.script;
                         document.body.appendChild(el);
                     }
-                    Y.one('#mform1').on('submit', M.block_talk_to.submit_form());
+                    Y.one('#mform1').on('submit', M.block_talkto.submit_form());
                 },
                 failure: function(id, o) {
                     this.show_response(o.responseText);

@@ -1,4 +1,4 @@
-.block_talk_to {
+.block_talkto {
     width:300px;
     overflow-x:hidden;
     margin-top: 11%;
@@ -29,7 +29,7 @@
     }
 }
 
-.block_talk_to .modal-perfil {
+.block_talkto .modal-perfil {
     width:500px;
     height:auto;
     margin-top: -30px;
@@ -39,23 +39,23 @@
     position: fixed;
 }
 
-.block_talk_to .alert-danger {
+.block_talkto .alert-danger {
     width: 150px;
     margin-top: 45px;
 }
 
-.block_talk_to .alert-danger h8 {
+.block_talkto .alert-danger h8 {
     font-weight: bold;
 }
 
-.block_talk_to .alert-danger p {
+.block_talkto .alert-danger p {
     border-top: 1px solid #A91D22;
     text-align: center;
     font-size: 12px;
     margin-top: 5px;
 }
 
-.block_talk_to .box-content ul.boxes .box {
+.block_talkto .box-content ul.boxes .box {
     width: 250px;
     list-style-type: none;
     padding: 7px 10px 5px 10px;
@@ -64,14 +64,14 @@
     box-shadow: 2px 4px 5px 0 #bdbdbd;
 }
 
-.block_talk_to .box-content ul.boxes li.box p {
+.block_talkto .box-content ul.boxes li.box p {
     font-size: 20px;
     text-transform: none;
     font-weight: bold;
     font-family: Arial, sans-serif;
 }
 
-.block_talk_to .box-content ul.boxes li.box img {
+.block_talkto .box-content ul.boxes li.box img {
     width: 100px;
     height: auto;
     margin-right: 0;
@@ -80,39 +80,39 @@
     padding-bottom: 40px;
 }
 
-.block_talk_to .box-content ul.boxes li.box .row {
+.block_talkto .box-content ul.boxes li.box .row {
     display: inline-block;
     margin-top: 110px;
 }
 
-.block_talk_to .box-content ul.boxes li.box span {
+.block_talkto .box-content ul.boxes li.box span {
     font-size: 12px;
     font-weight: bold;
 }
 
-.block_talk_to .box-content ul.boxes .box {
+.block_talkto .box-content ul.boxes .box {
     border-top-color: #302F51;
     background-color: #CAE4FB;
     border-radius: 0;
 }
 
-#talk_to_form {
+#talkto_form {
     padding: 2em;
 }
 
-#talk_to_form .mform .fitem div.fitemtitle {
+#talkto_form .mform .fitem div.fitemtitle {
     width: 8em;
 }
 
-#talk_to_form .mform .fitem .felement {
+#talkto_form .mform .fitem .felement {
     margin-left: 10em;
 }
 
-#talk_to_form textarea {
+#talkto_form textarea {
     width: 80%;
 }
 
-.talk_to_confirm {
+.talkto_confirm {
     font-size: 2em;
     font-weight: bold;
     margin-top: 1em;

@@ -1,5 +1,5 @@
 {
-    "moodle-block_talk_to-form": {
+    "moodle-block_talkto-form": {
         "requires" : [
             "base",
             "io",

@@ -14,6 +14,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1duwlqdzuICSVeUZGwulHP3aIlw" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -34,7 +35,7 @@
       <option name="presentableId" value="Default" />
       <updated>1593288439836</updated>
       <workItem from="1593288441329" duration="527000" />
-      <workItem from="1593291668998" duration="598000" />
+      <workItem from="1593291668998" duration="1290000" />
     </task>
     <servers />
   </component>
@@ -42,9 +43,9 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="386" y="0" width="587" height="728" key="find.popup" timestamp="1593291961068">
+    <state x="386" y="0" width="587" height="728" key="find.popup" timestamp="1593292955029">
       <screen x="0" y="0" width="1360" height="728" />
     </state>
-    <state x="386" y="0" width="587" height="728" key="find.popup/0.0.1360.728@0.0.1360.728" timestamp="1593291961068" />
+    <state x="386" y="0" width="587" height="728" key="find.popup/0.0.1360.728@0.0.1360.728" timestamp="1593292955029" />
   </component>
 </project>

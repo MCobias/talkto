@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    block talk to
+ * @package    block talkto
  * @copyright  2020 Marcelo Cobias
  * @author     Marcelo Cobias <marcelocobias18@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,7 +24,7 @@ $PAGE->set_context($coursecontext);
 require_login();
 require_capability('moodle/site:sendmessage', $coursecontext);
 
-$url = '/blocks/talk_to/message.php';
+$url = '/blocks/talkto/message.php';
 $PAGE->set_url($url);
 
 $recipient = $DB->get_record('user', array('id' => $recipientid));
@@ -34,7 +34,7 @@ $customdata = array(
     'referurl' => $referurl,
     'courseid' => $courseid
 );
-$mform = new block_talk_to\message_form(null, $customdata);
+$mform = new block_talkto\message_form(null, $customdata);
 
 if ($mform->is_cancelled()) {
     // Form cancelled, redirect.
@@ -43,14 +43,14 @@ if ($mform->is_cancelled()) {
 } else if (($data = $mform->get_data())) {
     try {
         $mform->process($data);
-    } catch (talk_to_no_recipient_exception $e) {
+    } catch (talkto_no_recipient_exception $e) {
         if ($ajax) {
             header('HTTP/1.1 400 Bad Request');
             die($e->getMessage());
         } else {
             throw $e;
         }
-    } catch (talk_to_message_failed_exception $e) {
+    } catch (talkto_message_failed_exception $e) {
         if ($ajax) {
             header('HTTP/1.1 500 Internal Server Error');
             die($e->getMessage());
@@ -60,8 +60,8 @@ if ($mform->is_cancelled()) {
     }
     if ($ajax) {
         $output = html_writer::tag('p',
-                                    get_string('messagesent', 'block_talk_to'),
-                                    array('class' => 'talk_to_confirm'));
+                                    get_string('messagesent', 'block_talkto'),
+                                    array('class' => 'talkto_confirm'));
         echo json_encode(array('state' => 1, 'output' => $output));
     } else {
         redirect($data->referurl);
@@ -91,7 +91,7 @@ if ($mform->is_cancelled()) {
         $endcode = $PAGE->requires->get_end_code();
         $script .= preg_replace('/<\/?(script|link)[^>]*>/', '', $endcode);
 
-        $output = html_writer::tag('div', $form, array('id' => 'talk_to_form'));
+        $output = html_writer::tag('div', $form, array('id' => 'talkto_form'));
 
         echo json_encode(array('state' => 0, 'output' => $output, 'script' => $script));
 
