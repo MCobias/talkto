@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    Block talk to
+ * @package    Block talkto
  * @copyright  2019 Marcelo Cobias
  * @author     Marcelo Cobias <marcelo.amorim@projecao.br>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -9,6 +9,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
+
 
 class block_talkto extends block_base {
 
@@ -260,10 +261,8 @@ class block_talkto extends block_base {
         }
 
         //$PAGE->requires->css('/blocks/menu_mural_virtual/style.css');
-        $PAGE->requires->yui_module('moodle-block_talkto-form','M.block_talkto.form.init');
         return $this->content;
     }
-
 
     public function applicable_formats() {
         return array('all' => true, 'my' => false);

@@ -13,6 +13,7 @@ if ($ajax) {
 }
 
 require_once(__DIR__.'/../../config.php');
+require_once(__DIR__.'/../../message/lib.php');
 
 $courseid = required_param('courseid', PARAM_INT);
 $recipientid = required_param('recipientid', PARAM_INT);
@@ -34,70 +35,117 @@ $customdata = array(
     'referurl' => $referurl,
     'courseid' => $courseid
 );
-$mform = new block_talkto\message_form(null, $customdata);
 
-if ($mform->is_cancelled()) {
-    // Form cancelled, redirect.
-    redirect($referurl);
-    exit();
-} else if (($data = $mform->get_data())) {
-    try {
-        $mform->process($data);
-    } catch (talkto_no_recipient_exception $e) {
-        if ($ajax) {
-            header('HTTP/1.1 400 Bad Request');
-            die($e->getMessage());
-        } else {
-            throw $e;
-        }
-    } catch (talkto_message_failed_exception $e) {
-        if ($ajax) {
-            header('HTTP/1.1 500 Internal Server Error');
-            die($e->getMessage());
-        } else {
-            throw $e;
-        }
-    }
-    if ($ajax) {
-        $output = html_writer::tag('p',
-                                    get_string('messagesent', 'block_talkto'),
-                                    array('class' => 'talkto_confirm'));
-        echo json_encode(array('state' => 1, 'output' => $output));
-    } else {
-        redirect($data->referurl);
-    }
-    exit();
+// The id of the user we want to view messages from.
+$id = $recipient->id;
+
+// It's possible for someone with the right capabilities to view a conversation between two other users. For BC
+// we are going to accept other URL parameters to figure this out.
+$user1id = optional_param('user1', $USER->id, PARAM_INT);
+$user2id = optional_param('user2', $id, PARAM_INT);
+$contactsfirst = optional_param('contactsfirst', 0, PARAM_INT);
+
+$user1 = null;
+$currentuser = true;
+if ($user1id != $USER->id) {
+    $user1 = core_user::get_user($user1id, '*', MUST_EXIST);
+    $currentuser = false;
 } else {
+    $user1 = $USER;
+}
 
-    // Form has not been submitted, just display it.
-    if ($ajax) {
-        ob_start();
-        $mform->display();
-        $form = ob_get_clean();
-        if (strpos($form, '</script>') !== false) {
-            $outputparts = explode('</script>', $form);
-            $output = $outputparts[1];
-            $script = str_replace('<script type="text/javascript">', '', $outputparts[0]);
-        } else {
-            $output = $form;
+$user2 = null;
+if (!empty($user2id)) {
+    $user2 = core_user::get_user($user2id, '*', MUST_EXIST);
+}
+
+$user2realuser = !empty($user2) && core_user::is_real_user($user2->id);
+$systemcontext = context_system::instance();
+if ($currentuser === false && !has_capability('moodle/site:readallmessages', $systemcontext)) {
+    print_error('accessdenied', 'admin');
+}
+
+$PAGE->set_context(context_user::instance($user1->id));
+$PAGE->set_pagelayout('standard');
+$strmessages = get_string('messages', 'message');
+if ($user2realuser) {
+    $user2fullname = fullname($user2);
+
+    $PAGE->set_title("$strmessages: $user2fullname");
+    $PAGE->set_heading("$strmessages: $user2fullname");
+} else {
+    $PAGE->set_title("{$SITE->shortname}: $strmessages");
+    $PAGE->set_heading("{$SITE->shortname}: $strmessages");
+}
+
+// Remove the user node from the main navigation for this page.
+$usernode = $PAGE->navigation->find('users', null);
+$usernode->remove();
+
+$settings = $PAGE->settingsnav->find('messages', null);
+$settings->make_active();
+
+// Get the renderer and the information we are going to be use.
+$renderer = $PAGE->get_renderer('core_message');
+$requestedconversation = false;
+if ($contactsfirst) {
+    $conversations = \core_message\api::get_contacts($user1->id, 0, 20);
+} else {
+    $conversations = \core_message\api::get_conversations($user1->id, 0, 20);
+}
+$messages = [];
+if (!$user2realuser) {
+    // If there are conversations, but the user has not chosen a particular one, then render the most recent one.
+    $user2 = new stdClass();
+    $user2->id = null;
+    if (!empty($conversations)) {
+        $contact = reset($conversations);
+        $user2->id = $contact->userid;
+    }
+} else {
+    // The user has specifically requested to see a conversation. Add the flag to
+    // the context so that we can render the messaging app appropriately - this is
+    // used for smaller screens as it allows the UI to be responsive.
+    $requestedconversation = true;
+}
+
+// Mark the conversation as read.
+if (!empty($user2->id)) {
+    if ($currentuser && isset($conversations[$user2->id])) {
+        // Mark the conversation we are loading as read.
+        if ($conversationid = \core_message\api::get_conversation_between_users([$user1->id, $user2->id])) {
+            \core_message\api::mark_all_messages_as_read($user1->id, $conversationid);
         }
 
-        // Now it gets a bit tricky, we need to get the libraries and init calls for any Javascript used
-        // by the form element plugins.
-        $headcode = $PAGE->requires->get_head_code($PAGE, $OUTPUT);
-        $loadpos = strpos($headcode, 'M.yui.loader');
-        $cfgpos = strpos($headcode, 'M.cfg');
-        $script .= substr($headcode, $loadpos, $cfgpos - $loadpos);
-        $endcode = $PAGE->requires->get_end_code();
-        $script .= preg_replace('/<\/?(script|link)[^>]*>/', '', $endcode);
-
-        $output = html_writer::tag('div', $form, array('id' => 'talkto_form'));
-
-        echo json_encode(array('state' => 0, 'output' => $output, 'script' => $script));
-
-    } else {
-        echo $OUTPUT->header();
-        $mform->display();
-        echo $OUTPUT->footer();
+        // Ensure the UI knows it's read as well.
+        $conversations[$user2->id]->isread = 1;
     }
+
+    $messages = \core_message\api::get_messages($user1->id, $user2->id, 0, 20, 'timecreated DESC');
 }
+
+$pollmin = !empty($CFG->messagingminpoll) ? $CFG->messagingminpoll : MESSAGE_DEFAULT_MIN_POLL_IN_SECONDS;
+$pollmax = !empty($CFG->messagingmaxpoll) ? $CFG->messagingmaxpoll : MESSAGE_DEFAULT_MAX_POLL_IN_SECONDS;
+$polltimeout = !empty($CFG->messagingtimeoutpoll) ? $CFG->messagingtimeoutpoll : MESSAGE_DEFAULT_TIMEOUT_POLL_IN_SECONDS;
+$messagearea = new \core_message\output\messagearea\message_area($user1->id, $user2->id, $conversations, $messages,
+    $requestedconversation, $contactsfirst, $pollmin, $pollmax, $polltimeout);
+
+// Now the page contents.
+echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('messages', 'message'));
+
+// Display a message if the messages have not been migrated yet.
+if (!get_user_preferences('core_message_migrate_data', false, $user1id)) {
+    $notify = new \core\output\notification(get_string('messagingdatahasnotbeenmigrated', 'message'),
+        \core\output\notification::NOTIFY_WARNING);
+    echo $OUTPUT->render($notify);
+}
+
+// Display a message that the user is viewing someone else's messages.
+if (!$currentuser) {
+    $notify = new \core\output\notification(get_string('viewinganotherusersmessagearea', 'message'),
+        \core\output\notification::NOTIFY_WARNING);
+    echo $OUTPUT->render($notify);
+}
+echo $renderer->render($messagearea);
+echo $OUTPUT->footer();
