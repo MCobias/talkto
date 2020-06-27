@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package    block Fale com o tutor
- * @copyright  2019 UniProjecao
- * @author     Marcelo Cobias <marcelo.amorim@projecao.br>
+ * @package    block plugin talkto
+ * @copyright  2019 Marcelo Cobias
+ * @author     Marcelo Cobias <marcelocobias18@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -15,5 +15,5 @@ $string['messagefailed'] = 'Mensagem nao enviada';
 $string['messagesent'] = 'Mensagem enviada!';
 $string['messagetext'] = 'Texto da mensagem';
 $string['send'] = 'Enviar';
-$string['pluginname'] = 'Talk to';
+$string['pluginname'] = 'Talkto';
 
