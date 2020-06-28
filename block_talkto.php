@@ -7,8 +7,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->libdir.'/filelib.php');
-
+require_once('../lib/filelib.php');
 
 class block_talkto extends block_base {
 
@@ -201,7 +200,7 @@ class block_talkto extends block_base {
                     $editpicurl = new moodle_url('/pix/i/grademark.gif');
                     $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'pull-right', 'width' => '5%')));
                 }
-                
+
                 $this->content->text = "";
                 $this->content->text .= $editrolelocal;
 

@@ -5,8 +5,8 @@
  * @author     Marcelo Cobias <marcelocobias18@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__.'/../../config.php');
-require_once(__DIR__.'/../../message/lib.php');
+require_once('../config.php');
+require_once('../message/lib.php');
 
 $courseid = $COURSE->id;
 $recipientid = $teacher->id;
