@@ -9,7 +9,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2018073108;
+$plugin->version = 2020270603;
 $plugin->requires = 2017051507;
 $plugin->component = 'block_talkto';
-

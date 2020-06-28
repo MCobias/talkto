@@ -7,7 +7,6 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
 require_once($CFG->libdir.'/filelib.php');
 
 
@@ -19,11 +18,11 @@ class block_talkto extends block_base {
 
     public function get_content() {
         global $COURSE, $USER, $DB, $PAGE;
+        $context = context_course::instance($COURSE->id);
 
         if ($this->content !== null or !$this->view_only_course()) {
             return $this->content;
         }
-
         $this->content = new stdClass();
 
         if(!is_siteadmin()) {
@@ -186,9 +185,24 @@ class block_talkto extends block_base {
                     $picture->size = 200;
                     $profile = $picture->get_url($PAGE);
 
+                    $helloworldpages = $DB->get_records('block_helloworld');
+
+                    $edit = '';
+                    if (is_siteadmin()) {
+                        $pageparam = array('blockid' => $this->instance->id,
+                            'courseid' => $COURSE->id,
+                            'id' => '');
+
+                        //edit
+                        $editurl = new moodle_url('/blocks/talkto/edit.php', $pageparam);
+                        $editpicurl = new moodle_url('/pix/t/edit.png');
+                        $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
+                    }
+
                     //Render box tutor
                     $this->content->text .= '<div class="box-content">';
                     $this->content->text .= '<ul class="boxes">';
+                    $this->content->text .= $edit;
                     $this->content->text .= '<li class="box">';
 
                     $this->content->text .= '<p class="pull-left">Tutoria</p>';
@@ -259,6 +273,15 @@ class block_talkto extends block_base {
         return $this->content;
     }
 
+    public function html_attributes()
+    {
+        $attributes = parent::html_attributes();
+        if (get_config('helloworld', 'Colored_Text')) {
+            $attributes['class'] .= ' colored-text';
+        }
+        return $attributes;
+    }
+
     public function applicable_formats() {
         return array('all' => true, 'my' => false);
     }
@@ -289,5 +312,10 @@ class block_talkto extends block_base {
             }
         }
         return true;
+    }
+
+    public function instance_delete(){
+        global $DB;
+        $DB->delete_records('block_talkto', array('blockid' => $this->instance->id));
     }
 }
