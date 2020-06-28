@@ -185,13 +185,23 @@ class block_talkto extends block_base {
                     $picture->size = 200;
                     $profile = $picture->get_url($PAGE);
 
-                    $boxinfo = $DB->get_records('block_talkto');
+                    $idbox = 0;
+                    $titlerole = 'Talkt♾';
+                    $settingsbox = $DB->get_record('block_talkto', ['userid'=>$teacher->id, 'courseid'=>$COURSE->id]);
+                    var_dump($settingsbox);
 
+                    if(!empty($settingsbox)){
+                        $idbox = $settingsbox->id;
+                        if($settingsbox->titlerole !='') {
+                            $titlerole = $settingsbox->titlerole;
+                        }
+                    }
                     $edit = '';
                     if (is_siteadmin()) {
                         $pageparam = array('blockid' => $this->instance->id,
                             'courseid' => $COURSE->id,
-                            'id' => '');
+                            'userid'=>$teacher->id,
+                            'id' => $idbox);
 
                         //edit
                         $editurl = new moodle_url('/blocks/talkto/edit.php', $pageparam);
@@ -205,7 +215,7 @@ class block_talkto extends block_base {
                     $this->content->text .= $edit;
                     $this->content->text .= '<li class="box">';
 
-                    $this->content->text .= '<p class="pull-left">Tutoria</p>';
+                    $this->content->text .= '<p class="pull-left">'.$titlerole.'</p>';
 
                     $now = strtotime(date("Y-m-d H:i:s"));
                     $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
@@ -227,7 +237,7 @@ class block_talkto extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">Fale com o tutor</a></span>';
+                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">Fale com o '.$titlerole.'</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';

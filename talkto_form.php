@@ -31,13 +31,15 @@ class talkto_form extends moodleform
         $mform =& $this->_form;
         $mform->addElement('header', 'displayinfo', get_string('titleformbox', 'block_talkto'));
 
-        $mform->addElement('text', 'title', get_string('titleinputrole', 'block_talkto'));
+        $mform->addElement('text', 'titlerole', get_string('titleinputrole', 'block_talkto'));
         $mform->setType('title', PARAM_RAW);
         $mform->addRule('title', null, 'required', null, 'client');
 
         $mform->addElement('hidden', 'id', '0');
 
-        $mform->addElement('hidden', 'blockid');
+        $mform->addElement('hidden', 'userid');
+
+        $mform->addElement('hidden', 'roleid');
 
         $mform->addElement('hidden', 'courseid');
 

@@ -35,11 +35,11 @@ require_login($course);
 require_capability('block/talkto:managepages', context_course::instance($courseid));
 
 //breadcrumb
-$blockid = required_param('blockid', PARAM_INT);
+$userid = required_param('userid', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 $viewpage = optional_param('viewpage', false, PARAM_BOOL);
 $settingsnode = $PAGE->settingsnav->add(get_string('talktosettings', 'block_talkto'));
-$editurl = new moodle_url('/blocks/talkto/edit.php', array('id' => $id, 'courseid' => $courseid, 'blockid' => $blockid));
+$editurl = new moodle_url('/blocks/talkto/edit.php', array('id' => $id, 'courseid' => $courseid, 'userid' => $userid));
 $editnode = $settingsnode->add(get_string('editpage', 'block_talkto'), $editurl);
 $editnode->make_active();
 
@@ -50,15 +50,14 @@ $PAGE->set_heading(get_string('editpage', 'block_talkto'));
 $context = context_course::instance($courseid);
 $contextid = $context->id;
 $PAGE->set_context($context);
-// Create some options for the file manager
-$filemanageropts = array('subdirs' => 0, 'maxbytes' => '0', 'maxfiles' => 50, 'context' => $context);
-$customdata = array('filemanageropts' => $filemanageropts);
-$talkto_form = new talkto_form(null, $customdata);
 
+// Create form
+$talkto_form = new talkto_form();
 $entry = new stdClass;
-$entry->blockid = $blockid;
+$entry->userid = $userid;
 $entry->courseid = $courseid;
 $entry->id = $id;
+$entry->roleid = 4;
 $talkto_form->set_data($entry);
 
 if ($talkto_form->is_cancelled()) {
@@ -67,9 +66,6 @@ if ($talkto_form->is_cancelled()) {
     redirect($courseurl);
 } else if ($form_submitted_data = $talkto_form->get_data()) {
     //form has been submitted
-    file_save_draft_area_files($form_submitted_data->attachment, $context->id, 'block_talkto', 'attachment',
-        $form_submitted_data->attachment, array('subdirs' => 0, 'maxbytes' => 500000, 'maxfiles' => 1));
-
     if ($form_submitted_data->id != 0) {
         if (!$DB->update_record('block_talkto', $form_submitted_data)) {
             print_error('updateerror', 'block_talkto');
@@ -88,9 +84,6 @@ if ($talkto_form->is_cancelled()) {
     if ($id) {
         $talktopage = $DB->get_record('block_talkto', array('id' => $id));
         $talkto_form->set_data($talktopage);
-        $draftitemid = $talktopage->attachment ; //file_get_submitted_draft_itemid('attachment');
-        file_prepare_draft_area($draftitemid, $context->id, 'block_talkto', 'attachment', $talktopage->attachment,
-            array('subdirs' => 0, 'maxbytes' => 5000000, 'maxfiles' => 1));
     }
     $talkto_form->display();
     echo $OUTPUT->footer();
