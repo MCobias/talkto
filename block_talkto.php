@@ -237,14 +237,13 @@ class block_talkto extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">Fale com o '.$titlerole.'</a></span>';
+                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('messageboxfooter', 'block_talkto').' '.$titlerole.'</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';
                     $this->content->text .= '</ul>';
                     $this->content->text .= '</div>';
-
-
+                    
                     include 'chatbox.php';
                     $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                     $this->content->text .= '<div class="" role="document">';

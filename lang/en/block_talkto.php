@@ -16,6 +16,8 @@ $string['messagefailed'] = 'Mensagem nao enviada';
 $string['messagesent'] = 'Mensagem enviada!';
 $string['messagetext'] = 'Texto da mensagem';
 
+$string['messageboxfooter'] = 'Fale com o';
+
 $string['titleformbox'] = 'Configuração';
 $string['titleinputrole'] = 'Papel';
 
