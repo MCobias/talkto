@@ -18,15 +18,14 @@ require_login($course);
 require_capability('block/talkto:managepages', context_course::instance($courseid));
 
 //breadcrumb
-$roleid = required_param('roleid', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 $viewpage = optional_param('viewpage', false, PARAM_BOOL);
 $settingsnode = $PAGE->settingsnav->add(get_string('talktosettings', 'block_talkto'));
-$editurl = new moodle_url('/blocks/talkto/editrole.php', array('id' => $id, 'courseid' => $courseid, 'roleid' => $roleid));
+$editurl = new moodle_url('/blocks/talkto/editrole.php', array('id' => $id, 'courseid' => $courseid));
 $editnode = $settingsnode->add(get_string('editpage', 'block_talkto'), $editurl);
 $editnode->make_active();
 
-$PAGE->set_url('/blocks/talkto/editrole.php', array('courseid' => $courseid));
+$PAGE->set_url('/blocks/talkto/editrole.php', array('id' => $id));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading(get_string('editpage', 'block_talkto'));
 
@@ -37,14 +36,13 @@ $PAGE->set_context($context);
 // Create form
 $talkto_form = new talkto_form_role();
 $entry = new stdClass;
-$entry->roleid = $roleid;
 $entry->courseid = $courseid;
 $entry->id = $id;
 $talkto_form->set_data($entry);
 
 if ($talkto_form->is_cancelled()) {
     // Cancelled forms redirect to the course main page.
-    $courseurl = new moodle_url('/course/view.php', array('courseid' => $courseid));
+    $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     redirect($courseurl);
 } else if ($form_submitted_data = $talkto_form->get_data()) {
     //form has been submitted
@@ -57,7 +55,7 @@ if ($talkto_form->is_cancelled()) {
             print_error('inserterror', 'block_talkto_role_course');
         }
     }
-    $courseurl = new moodle_url('/course/view.php', array('courseid' => $courseid));
+    $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     redirect($courseurl);
 } else {
     // form didn't validate or this is the first display

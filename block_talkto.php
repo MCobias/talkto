@@ -27,6 +27,15 @@ class block_talkto extends block_base {
 
         $rolesecond = 3;
         $role = get_config('block_talkto', 'role');
+
+        $idrolelocal = 0;
+        $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
+
+        if(!empty($settingsrolelocal)){
+            $idrolelocal = $settingsrolelocal->id;
+            $role = $settingsrolelocal->roleid;
+        }
+
         if($role > 3)$rolesecond = 4;
 
         if(!is_siteadmin()) {
@@ -182,27 +191,17 @@ class block_talkto extends block_base {
             }
             else
             {
-                $idrolelocal = 0;
-                $rolelocal = $role;
-                $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
-
-                if(!empty($settingsrolelocal)){
-                    $idrolelocal = $settingsrolelocal->id;
-                    $rolelocal = $settingsrolelocal->roleid;
-                }
-
                 $editrolelocal = '';
                 if (is_siteadmin()) {
-                    $pageparam = array('blockid' => $this->instance->id,
-                        'courseid' => $COURSE->id,
-                        'roleid'=>$rolelocal,
+                    $pageparam = array('courseid' => $COURSE->id,
                         'id' => $idrolelocal);
 
-                    //edit
+                    //edit role local
                     $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
-                    $editpicurl = new moodle_url('/pix/i/edit.png');
-                    $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
+                    $editpicurl = new moodle_url('/pix/i/grademark.gif');
+                    $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'pull-right', 'width' => '5%')));
                 }
+                
                 $this->content->text = "";
                 $this->content->text .= $editrolelocal;
 
@@ -224,14 +223,13 @@ class block_talkto extends block_base {
                     }
                     $edit = '';
                     if (is_siteadmin()) {
-                        $pageparam = array('blockid' => $this->instance->id,
-                            'courseid' => $COURSE->id,
+                        $pageparam = array('courseid' => $COURSE->id,
                             'userid'=>$teacher->id,
                             'id' => $idbox);
 
                         //edit
                         $editurl = new moodle_url('/blocks/talkto/editbox.php', $pageparam);
-                        $editpicurl = new moodle_url('/pix/t/edit.png');
+                        $editpicurl = new moodle_url('/pix/i/admin.gif');
                         $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
                     }
 

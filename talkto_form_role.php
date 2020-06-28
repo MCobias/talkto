@@ -22,7 +22,6 @@ class talkto_form_role extends moodleform
                 $options[$value->id] = $value->localname;
         }
         $mform->addElement('select', 'roleid', get_string('rolecourse', 'block_talkto'), $options);
-        $mform->addHelpButton('roleid', 'roleid', 'block_talkto');
 
         $mform->addElement('hidden', 'id', '0');
 

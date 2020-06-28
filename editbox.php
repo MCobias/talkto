@@ -44,7 +44,7 @@ $talkto_form->set_data($entry);
 
 if ($talkto_form->is_cancelled()) {
     // Cancelled forms redirect to the course main page.
-    $courseurl = new moodle_url('/course/view.php', array('id' => $id));
+    $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     redirect($courseurl);
 } else if ($form_submitted_data = $talkto_form->get_data()) {
     //form has been submitted
@@ -57,7 +57,7 @@ if ($talkto_form->is_cancelled()) {
             print_error('inserterror', 'block_talkto');
         }
     }
-    $courseurl = new moodle_url('/course/view.php', array('id' => $id));
+    $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     redirect($courseurl);
 } else {
     // form didn't validate or this is the first display
