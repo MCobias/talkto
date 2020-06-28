@@ -7,7 +7,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once('../lib/filelib.php');
+require_once($CFG->libdir.'/filelib.php');
 
 class block_talkto extends block_base {
 
