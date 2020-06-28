@@ -29,22 +29,11 @@ class talkto_form extends moodleform
     function definition()
     {
         $mform =& $this->_form;
-        $mform->addElement('header', 'displayinfo', get_string('mandatoryfields', 'block_helloworld'));
-        $filemanageropts = $this->_customdata['filemanageropts'];
-        $filemanageropts['maxfiles'] = 1;
+        $mform->addElement('header', 'displayinfo', get_string('titleformbox', 'block_talkto'));
 
-        $mform->addElement('text', 'title', get_string('title', 'block_helloworld'));
+        $mform->addElement('text', 'title', get_string('titleinputrole', 'block_talkto'));
         $mform->setType('title', PARAM_RAW);
         $mform->addRule('title', null, 'required', null, 'client');
-
-        $mform->addElement('htmleditor', 'text', get_string('displayedcontent', 'block_helloworld'));
-        $mform->setType('text', PARAM_RAW);
-        $mform->addRule('text', null, 'required', null, 'client');
-
-        $mform->addElement('filemanager', 'attachment',get_string('displayedcontent', 'block_helloworld'), null, $filemanageropts);
-        $mform->addElement('header', 'optional', get_string('optional', 'form'), null, false);
-        $mform->addElement('date_time_selector', 'date', get_string('date'), array('optional' => true));
-        $mform->setAdvanced('optional');
 
         $mform->addElement('hidden', 'id', '0');
 

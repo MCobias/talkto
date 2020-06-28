@@ -185,7 +185,7 @@ class block_talkto extends block_base {
                     $picture->size = 200;
                     $profile = $picture->get_url($PAGE);
 
-                    $helloworldpages = $DB->get_records('block_helloworld');
+                    $boxinfo = $DB->get_records('block_talkto');
 
                     $edit = '';
                     if (is_siteadmin()) {

@@ -12,8 +12,13 @@ defined('MOODLE_INTERNAL') || die();
 $string['messagefrom'] = 'Mensagem para {$a}';
 $string['messageheader'] = 'Escreva sua mensagem para o Tutor: {$a}';
 $string['messagefailed'] = 'Mensagem nao enviada';
+$string['messagefailed'] = 'Mensagem nao enviada';
 $string['messagesent'] = 'Mensagem enviada!';
 $string['messagetext'] = 'Texto da mensagem';
+
+$string['titleformbox'] = 'Configuração';
+$string['titleinputrole'] = 'Papel';
+
 $string['send'] = 'Enviar';
 $string['pluginname'] = 'Talkto';
 
