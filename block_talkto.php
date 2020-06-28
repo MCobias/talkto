@@ -25,12 +25,12 @@ class block_talkto extends block_base {
         }
         $this->content = new stdClass();
 
+        $rolesecond = 3;
         $role = get_config('block_talkto', 'role');
-
-        var_dump($role);
+        if($role > 3)$rolesecond = 4;
 
         if(!is_siteadmin()) {
-            if (user_has_role_assignment($USER->id,4)) {
+            if (user_has_role_assignment($USER->id, $role)) {
 
                 $urlparams = array(
                     'courseid' => $COURSE->id,
@@ -81,7 +81,7 @@ class block_talkto extends block_base {
         }
 
         //Lista de usuarios com perfil de tutor
-        list($usql, $uparams) = $DB->get_in_or_equal('4');
+        list($usql, $uparams) = $DB->get_in_or_equal($role);
         $params = array($COURSE->id, CONTEXT_COURSE);
         $coursehasgroups = groups_get_all_groups($COURSE->id);
         //print_r(array_values ($coursehasgroups));
@@ -99,7 +99,7 @@ class block_talkto extends block_base {
         $msgrr = '<div class="alert alert-danger" role="alert"><h8 class="alert-heading">Oops</h8><p class="mb-0">MSG</p></div>';
 
         if ($teachers = $DB->get_records_sql($select.$from.$where.$order, $params)) {
-            if (!is_siteadmin() and !user_has_role_assignment($USER->id,3)) {
+            if (!is_siteadmin() and !user_has_role_assignment($USER->id, $rolesecond)) {
                 if ($coursehasgroups) {
                     try {
                         $groupteachers = array();
@@ -182,7 +182,30 @@ class block_talkto extends block_base {
             }
             else
             {
+                $idrolelocal = 0;
+                $rolelocal = $role;
+                $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
+
+                if(!empty($settingsrolelocal)){
+                    $idrolelocal = $settingsrolelocal->id;
+                    $rolelocal = $settingsrolelocal->roleid;
+                }
+
+                $editrolelocal = '';
+                if (is_siteadmin()) {
+                    $pageparam = array('blockid' => $this->instance->id,
+                        'courseid' => $COURSE->id,
+                        'roleid'=>$rolelocal,
+                        'id' => $idrolelocal);
+
+                    //edit
+                    $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
+                    $editpicurl = new moodle_url('/pix/i/edit.png');
+                    $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
+                }
                 $this->content->text = "";
+                $this->content->text .= $editrolelocal;
+
                 foreach ($teachers as $teacher) {
                     $picture = '';
                     $picture = new user_picture($teacher);
@@ -207,7 +230,7 @@ class block_talkto extends block_base {
                             'id' => $idbox);
 
                         //edit
-                        $editurl = new moodle_url('/blocks/talkto/edit.php', $pageparam);
+                        $editurl = new moodle_url('/blocks/talkto/editbox.php', $pageparam);
                         $editpicurl = new moodle_url('/pix/t/edit.png');
                         $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
                     }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package    block plugin talkto
  * @copyright  2019 Marcelo Cobias
@@ -15,8 +14,9 @@ $string['roledesc']         = 'Selecione o tipo do papel para criação do boxe.
 $string['messageboxfooter'] = 'Fale com o';
 
 $string['titleformbox'] = 'Configuração';
-$string['titleinputrole'] = 'Papel';
+$string['titleinputrole'] = 'Titulo do box';
 
-$string['send'] = 'Enviar';
+$string['rolecourse'] = 'Regra local para o papel';
+
 $string['pluginname'] = 'Talkto';
 
