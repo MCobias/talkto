@@ -9,12 +9,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['messagefrom'] = 'Mensagem para {$a}';
-$string['messageheader'] = 'Escreva sua mensagem para o Tutor: {$a}';
-$string['messagefailed'] = 'Mensagem nao enviada';
-$string['messagefailed'] = 'Mensagem nao enviada';
-$string['messagesent'] = 'Mensagem enviada!';
-$string['messagetext'] = 'Texto da mensagem';
+$string['roleinclude']         = 'Papel: ';
+$string['roledesc']         = 'Selecione o tipo do papel para criação do boxe.';
 
 $string['messageboxfooter'] = 'Fale com o';
 

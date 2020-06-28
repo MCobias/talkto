@@ -25,6 +25,10 @@ class block_talkto extends block_base {
         }
         $this->content = new stdClass();
 
+        $role = get_config('block_talkto', 'role');
+
+        var_dump($role);
+
         if(!is_siteadmin()) {
             if (user_has_role_assignment($USER->id,4)) {
 
@@ -188,7 +192,6 @@ class block_talkto extends block_base {
                     $idbox = 0;
                     $titlerole = 'Talkt♾';
                     $settingsbox = $DB->get_record('block_talkto', ['userid'=>$teacher->id, 'courseid'=>$COURSE->id]);
-                    var_dump($settingsbox);
 
                     if(!empty($settingsbox)){
                         $idbox = $settingsbox->id;
@@ -296,12 +299,12 @@ class block_talkto extends block_base {
     }
 
     public function has_config() {
-        return false;
+        return true;
     }
 
     public function instance_allow_multiple()
     {
-        return false;
+        return true;
     }
 
     function hide_header() {

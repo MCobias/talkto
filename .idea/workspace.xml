@@ -23,7 +23,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../talkto" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -49,6 +49,7 @@
       <updated>1593288439836</updated>
       <workItem from="1593288441329" duration="527000" />
       <workItem from="1593291668998" duration="21092000" />
+      <workItem from="1593369109548" duration="5624000" />
     </task>
     <servers />
   </component>
