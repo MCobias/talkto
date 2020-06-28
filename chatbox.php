@@ -6,27 +6,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-@$ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']);
-
-if ($ajax) {
-    define('AJAX_SCRIPT', true);
-}
-
 require_once(__DIR__.'/../../config.php');
 require_once(__DIR__.'/../../message/lib.php');
 
-$courseid = required_param('courseid', PARAM_INT);
-$recipientid = required_param('recipientid', PARAM_INT);
-$referurl = required_param('referurl', PARAM_URL);
+$courseid = $COURSE->id;
+$recipientid = $teacher->id;
+$referurl = $this->page->url->out();
 
 $coursecontext = context_course::instance($courseid);
 $PAGE->set_context($coursecontext);
 
 require_login();
 require_capability('moodle/site:sendmessage', $coursecontext);
-
-$url = '/blocks/talkto/message.php';
-$PAGE->set_url($url);
 
 $recipient = $DB->get_record('user', array('id' => $recipientid));
 
@@ -65,49 +56,12 @@ if ($currentuser === false && !has_capability('moodle/site:readallmessages', $sy
     print_error('accessdenied', 'admin');
 }
 
-$PAGE->set_context(context_user::instance($user1->id));
-$PAGE->set_pagelayout('standard');
-$strmessages = get_string('messages', 'message');
-if ($user2realuser) {
-    $user2fullname = fullname($user2);
-
-    $PAGE->set_title("$strmessages: $user2fullname");
-    $PAGE->set_heading("$strmessages: $user2fullname");
-} else {
-    $PAGE->set_title("{$SITE->shortname}: $strmessages");
-    $PAGE->set_heading("{$SITE->shortname}: $strmessages");
-}
-
-// Remove the user node from the main navigation for this page.
-$usernode = $PAGE->navigation->find('users', null);
-$usernode->remove();
-
-$settings = $PAGE->settingsnav->find('messages', null);
-$settings->make_active();
-
 // Get the renderer and the information we are going to be use.
 $renderer = $PAGE->get_renderer('core_message');
-$requestedconversation = false;
-if ($contactsfirst) {
-    $conversations = \core_message\api::get_contacts($user1->id, 0, 20);
-} else {
-    $conversations = \core_message\api::get_conversations($user1->id, 0, 20);
-}
+
 $messages = [];
-if (!$user2realuser) {
-    // If there are conversations, but the user has not chosen a particular one, then render the most recent one.
-    $user2 = new stdClass();
-    $user2->id = null;
-    if (!empty($conversations)) {
-        $contact = reset($conversations);
-        $user2->id = $contact->userid;
-    }
-} else {
-    // The user has specifically requested to see a conversation. Add the flag to
-    // the context so that we can render the messaging app appropriately - this is
-    // used for smaller screens as it allows the UI to be responsive.
-    $requestedconversation = true;
-}
+$conversations = array();
+$requestedconversation = true;
 
 // Mark the conversation as read.
 if (!empty($user2->id)) {
@@ -116,7 +70,6 @@ if (!empty($user2->id)) {
         if ($conversationid = \core_message\api::get_conversation_between_users([$user1->id, $user2->id])) {
             \core_message\api::mark_all_messages_as_read($user1->id, $conversationid);
         }
-
         // Ensure the UI knows it's read as well.
         $conversations[$user2->id]->isread = 1;
     }
@@ -130,22 +83,4 @@ $polltimeout = !empty($CFG->messagingtimeoutpoll) ? $CFG->messagingtimeoutpoll :
 $messagearea = new \core_message\output\messagearea\message_area($user1->id, $user2->id, $conversations, $messages,
     $requestedconversation, $contactsfirst, $pollmin, $pollmax, $polltimeout);
 
-// Now the page contents.
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('messages', 'message'));
-
-// Display a message if the messages have not been migrated yet.
-if (!get_user_preferences('core_message_migrate_data', false, $user1id)) {
-    $notify = new \core\output\notification(get_string('messagingdatahasnotbeenmigrated', 'message'),
-        \core\output\notification::NOTIFY_WARNING);
-    echo $OUTPUT->render($notify);
-}
-
-// Display a message that the user is viewing someone else's messages.
-if (!$currentuser) {
-    $notify = new \core\output\notification(get_string('viewinganotherusersmessagearea', 'message'),
-        \core\output\notification::NOTIFY_WARNING);
-    echo $OUTPUT->render($notify);
-}
-echo $renderer->render($messagearea);
-echo $OUTPUT->footer();
+$html = $renderer->render($messagearea);

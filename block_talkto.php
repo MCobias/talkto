@@ -130,14 +130,6 @@ class block_talkto extends block_base {
                     }
 
                     foreach ($teachers as $teacher) {
-                        $urlparams = array(
-                            'courseid' => $COURSE->id,
-                            'referurl' => $this->page->url->out(),
-                            'recipientid' => $teacher->id
-                        );
-
-                        $url = new moodle_url('/blocks/talkto/message.php', $urlparams);
-
                         $picture = '';
                         $picture = new user_picture($teacher);
                         $picture->size = 200;
@@ -174,7 +166,7 @@ class block_talkto extends block_base {
                         setcookie('fale_tutor_img_' . $urlparams['courseid'], $profile);
 
                         $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                        $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talkto_link">Fale com o tutor</a></span>';
+                        $this->content->text .= '<span class="pull-right"><a href="#" class="talkto_link">Fale com o tutor</a></span>';
                         $this->content->text .= '</div">';
 
                         $this->content->text .= '</li>';
@@ -189,14 +181,6 @@ class block_talkto extends block_base {
             {
                 $this->content->text = "";
                 foreach ($teachers as $teacher) {
-                    $urlparams = array(
-                        'courseid' => $COURSE->id,
-                        'referurl' => $this->page->url->out(),
-                        'recipientid' => $teacher->id
-                    );
-
-                    $url = new moodle_url('/blocks/talkto/message.php', $urlparams);
-
                     $picture = '';
                     $picture = new user_picture($teacher);
                     $picture->size = 200;
@@ -229,12 +213,23 @@ class block_talkto extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span class="pull-right"><a href="' . $url . '" class="talkto_link">Fale com o tutor</a></span>';
+                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">Fale com o tutor</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';
                     $this->content->text .= '</ul>';
                     $this->content->text .= '</div>';
+
+
+                    include 'chatbox.php';
+                    $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
+                    $this->content->text .= '<div class="" role="document">';
+                    $this->content->text .= '<div class="modal-content">';
+                    $this->content->text .= '<div class="modal-body">';
+                    $this->content->text .= '<button class="fas fa-window-close fa-1x pull-right" data-dismiss="modal" aria-label="Fechar"></button>';
+                    $this->content->text .= '<div id="page-header">';
+                    $this->content->text .= $html;
+                    $this->content->text .= '</div></div></div></div></div>';
 
                     $this->content->text .= '<div style="width: 60%;" id="modalSupervisor" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                     $this->content->text .= '<div class="" role="document">';
