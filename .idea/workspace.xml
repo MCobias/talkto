@@ -67,7 +67,8 @@
       <updated>1593288439836</updated>
       <workItem from="1593288441329" duration="527000" />
       <workItem from="1593291668998" duration="21092000" />
-      <workItem from="1593369109548" duration="18231000" />
+      <workItem from="1593369109548" duration="22260000" />
+      <workItem from="1593421574376" duration="368000" />
     </task>
     <servers />
   </component>
@@ -84,6 +85,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="257" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1593377263961">
