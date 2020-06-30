@@ -268,6 +268,7 @@ class block_talkto extends block_base {
                     $this->content->text .= '</div>';
                     
                     include 'chatbox.php';
+
                     $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                     $this->content->text .= '<div class="" role="document">';
                     $this->content->text .= '<div class="modal-content">';

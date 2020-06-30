@@ -19,7 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bee8747-e6b6-45b8-964d-0d674e3398e4" name="Default Changelist" comment="" />
+    <list default="true" id="1bee8747-e6b6-45b8-964d-0d674e3398e4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/block_talkto.php" beforeDir="false" afterPath="$PROJECT_DIR$/block_talkto.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/chatbox.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/talkto_form_box.php" beforeDir="false" afterPath="$PROJECT_DIR$/talkto_form_box.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +74,8 @@
       <workItem from="1593288441329" duration="527000" />
       <workItem from="1593291668998" duration="21092000" />
       <workItem from="1593369109548" duration="18231000" />
+      <workItem from="1593473256610" duration="23000" />
+      <workItem from="1593473292996" duration="3121000" />
     </task>
     <servers />
   </component>
@@ -84,6 +92,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="257" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1593377263961">

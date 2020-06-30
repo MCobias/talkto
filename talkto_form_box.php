@@ -15,8 +15,8 @@ class talkto_form_box extends moodleform
         $mform->addElement('header', 'displayinfo', get_string('titleformbox', 'block_talkto'));
 
         $mform->addElement('text', 'titlerole', get_string('titleinputrole', 'block_talkto'));
-        $mform->setType('title', PARAM_RAW);
-        $mform->addRule('title', null, 'required', null, 'client');
+        $mform->setType('titlerole', PARAM_RAW);
+        $mform->addRule('titlerole', null, 'required', null, 'client');
 
         $mform->addElement('hidden', 'id', '0');
 
