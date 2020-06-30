@@ -1,7 +1,6 @@
 .block_talkto {
-    width:300px;
+    width:340px;
     overflow-x:hidden;
-    margin-top: 11%;
     margin-bottom: 0;
     float: right;
 }

@@ -238,7 +238,7 @@ class block_talkto extends block_base {
                     $this->content->text .= $edit;
                     $this->content->text .= '<li class="box">';
 
-                    $this->content->text .= '<p class="pull-left">'.$titlerole.'</p>';
+                    $this->content->text .= '<p class="">'.$titlerole.'</p>';
 
                     $now = strtotime(date("Y-m-d H:i:s"));
                     $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
@@ -259,8 +259,8 @@ class block_talkto extends block_base {
                     preg_replace('/\s+/i', ' ', $name);
                     $name = explode(" ", $teacher->firstname);
 
-                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span class="pull-right"><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('messageboxfooter', 'block_talkto').' '.$titlerole.'</a></span>';
+                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
+                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('messageboxfooter', 'block_talkto').' '.$titlerole.'</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';
@@ -273,7 +273,7 @@ class block_talkto extends block_base {
                     $this->content->text .= '<div class="" role="document">';
                     $this->content->text .= '<div class="modal-content">';
                     $this->content->text .= '<div class="modal-body">';
-                    $this->content->text .= '<button class="fas fa-window-close fa-1x pull-right" data-dismiss="modal" aria-label="Fechar"></button>';
+                    $this->content->text .= '<button class="fas fa-window-close fa-1x" data-dismiss="modal" aria-label="Fechar"></button>';
                     $this->content->text .= '<div id="page-header">';
                     $this->content->text .= $html;
                     $this->content->text .= '</div></div></div></div></div>';
