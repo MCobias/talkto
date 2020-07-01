@@ -260,7 +260,7 @@ class block_talkto extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('resentationother', 'block_talkto').' '.$titlerole.'</a></span>';
+                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('presentationother', 'block_talkto').' '.$titlerole.'</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';

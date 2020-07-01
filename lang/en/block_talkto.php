@@ -8,8 +8,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['presentationme']        = 'Eu sou ';
-$string['presentationother']        = 'Fale com o ';
+$string['presentationme']      = 'Eu sou ';
+$string['presentationother']   = 'Fale com o ';
 $string['roleinclude']         = 'Papel: ';
 $string['roledesc']            = 'Selecione o tipo do papel para criação do box.';
 $string['talktosettings']      = 'Configuração';
