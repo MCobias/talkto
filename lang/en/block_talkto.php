@@ -9,14 +9,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['roleinclude']         = 'Papel: ';
-$string['roledesc']         = 'Selecione o tipo do papel para criação do boxe.';
-
-$string['messageboxfooter'] = 'Fale com o';
-
-$string['titleformbox'] = 'Configuração';
-$string['titleinputrole'] = 'Titulo do box';
-
-$string['rolecourse'] = 'Regra local para o papel';
-
-$string['pluginname'] = 'Talkto';
+$string['roledesc']            = 'Selecione o tipo do papel para criação do box.';
+$string['messageboxfooter']    = 'Fale com o';
+$string['talktosettings']      = 'Configuração';
+$string['editbox']             = 'Editar box';
+$string['editrolelocal']       = 'Editar papel local';
+$string['titleformbox']        = 'Configuração';
+$string['titleinputrole']      = 'Titulo do box';
+$string['rolecourse']          = 'Regra local para o papel';
+$string['pluginname']          = 'Talkto';
 

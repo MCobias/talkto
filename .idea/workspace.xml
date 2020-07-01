@@ -22,7 +22,9 @@
     <list default="true" id="1bee8747-e6b6-45b8-964d-0d674e3398e4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/block_talkto.php" beforeDir="false" afterPath="$PROJECT_DIR$/block_talkto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/editbox.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editrole.php" beforeDir="false" afterPath="$PROJECT_DIR$/editrole.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lang/en/block_talkto.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/en/block_talkto.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +47,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lang/pt_br" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -55,6 +57,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Vagrant Boxs\MOODLE\html\senac\blocks\talkto\lang\pt_br" />
       <recent name="D:\Vagrant Boxs\MOODLE\html\projecao\blocks\talkto" />
       <recent name="D:\Vagrant Boxs\MOODLE\html\projecao\blocks\talkto\db" />
     </key>
@@ -73,7 +76,8 @@
       <workItem from="1593291668998" duration="21092000" />
       <workItem from="1593369109548" duration="18231000" />
       <workItem from="1593473256610" duration="23000" />
-      <workItem from="1593473292996" duration="5241000" />
+      <workItem from="1593473292996" duration="6339000" />
+      <workItem from="1593556820688" duration="3878000" />
     </task>
     <servers />
   </component>

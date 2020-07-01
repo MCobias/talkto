@@ -30,6 +30,9 @@ class block_talkto extends block_base {
         $idrolelocal = 0;
         $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
 
+        var_dump($settingsrolelocal);
+
+
         if(!empty($settingsrolelocal)){
             $idrolelocal = $settingsrolelocal->id;
             $role = $settingsrolelocal->roleid;
@@ -301,7 +304,6 @@ class block_talkto extends block_base {
         else {
             $this->content->text = str_replace('MSG', 'Nenhum Tutor definido. Entre em contato com o suporte.', $msgrr);
         }
-
         //$PAGE->requires->css('/blocks/menu_mural_virtual/style.css');
         return $this->content;
     }

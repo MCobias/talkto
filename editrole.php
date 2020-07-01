@@ -22,12 +22,12 @@ $id = optional_param('id', 0, PARAM_INT);
 $viewpage = optional_param('viewpage', false, PARAM_BOOL);
 $settingsnode = $PAGE->settingsnav->add(get_string('talktosettings', 'block_talkto'));
 $editurl = new moodle_url('/blocks/talkto/editrole.php', array('id' => $id, 'courseid' => $courseid));
-$editnode = $settingsnode->add(get_string('editpage', 'block_talkto'), $editurl);
+$editnode = $settingsnode->add(get_string('editrolelocal', 'block_talkto'), $editurl);
 $editnode->make_active();
 
 $PAGE->set_url('/blocks/talkto/editrole.php', array('id' => $id));
 $PAGE->set_pagelayout('standard');
-$PAGE->set_heading(get_string('editpage', 'block_talkto'));
+$PAGE->set_heading(get_string('editrolelocal', 'block_talkto'));
 
 $context = context_course::instance($courseid);
 $contextid = $context->id;
