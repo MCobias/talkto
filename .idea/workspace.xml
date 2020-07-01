@@ -22,8 +22,6 @@
     <list default="true" id="1bee8747-e6b6-45b8-964d-0d674e3398e4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/block_talkto.php" beforeDir="false" afterPath="$PROJECT_DIR$/block_talkto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/editbox.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editrole.php" beforeDir="false" afterPath="$PROJECT_DIR$/editrole.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lang/en/block_talkto.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/en/block_talkto.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +75,7 @@
       <workItem from="1593369109548" duration="18231000" />
       <workItem from="1593473256610" duration="23000" />
       <workItem from="1593473292996" duration="6339000" />
-      <workItem from="1593556820688" duration="3878000" />
+      <workItem from="1593556820688" duration="5456000" />
     </task>
     <servers />
   </component>

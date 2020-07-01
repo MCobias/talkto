@@ -42,7 +42,6 @@ class block_talkto extends block_base {
 
         if(!is_siteadmin()) {
             if (user_has_role_assignment($USER->id, $role)) {
-
                 $urlparams = array(
                     'courseid' => $COURSE->id,
                     'referurl' => $this->page->url->out(),
@@ -59,8 +58,7 @@ class block_talkto extends block_base {
                 $this->content->text .= '<ul class="boxes">';
                 $this->content->text .= '<li class="box">';
 
-                $this->content->text .= '<p class="pull-left">Tutoria</p>';
-
+                $this->content->text .= '<p class="pull-left">'.$this->get_name_role($role).'</p>';
                 $now = strtotime(date("Y-m-d H:i:s"));
                 $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $USER->lastaccess)));
                 $secs = $now - $lastacess;
@@ -81,7 +79,7 @@ class block_talkto extends block_base {
                 $name = explode(" ", $USER->firstname);
 
                 $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                $this->content->text .= '<span class="pull-right"><a class="talkto_link">Eu sou o Tutor</a></span>';
+                $this->content->text .= '<span class="pull-right"><a class="talkto_link">'.get_string('presentationme', 'block_talkto').$this->get_name_role($role).'</a></span>';
                 $this->content->text .= '</div">';
 
                 $this->content->text .= '</li>';
@@ -154,7 +152,7 @@ class block_talkto extends block_base {
                         $this->content->text .= '<ul class="boxes">';
                         $this->content->text .= '<li class="box">';
 
-                        $this->content->text .= '<p class="pull-left">Tutoria</p>';
+                        $this->content->text .= '<p class="pull-left">'.$this->get_name_role($role).'</p>';
 
                         $now = strtotime(date("Y-m-d H:i:s"));
                         $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
@@ -180,7 +178,7 @@ class block_talkto extends block_base {
                         setcookie('fale_tutor_img_' . $urlparams['courseid'], $profile);
 
                         $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                        $this->content->text .= '<span class="pull-right"><a href="#" class="talkto_link">Fale com o tutor</a></span>';
+                        $this->content->text .= '<span class="pull-right"><a href="#" class="talkto_link">'.get_string('presentationother', 'block_talkto').$this->get_name_role($role).'</a></span>';
                         $this->content->text .= '</div">';
 
                         $this->content->text .= '</li>';
@@ -263,7 +261,7 @@ class block_talkto extends block_base {
                     $name = explode(" ", $teacher->firstname);
 
                     $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('messageboxfooter', 'block_talkto').' '.$titlerole.'</a></span>';
+                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('resentationother', 'block_talkto').' '.$titlerole.'</a></span>';
                     $this->content->text .= '</div">';
 
                     $this->content->text .= '</li>';
@@ -352,5 +350,16 @@ class block_talkto extends block_base {
     public function instance_delete(){
         global $DB;
         $DB->delete_records('block_talkto', array('blockid' => $this->instance->id));
+    }
+
+    public function get_name_role($id){
+        $systemcontext = context_system::instance();
+        $roles = role_fix_names(get_all_roles(), $systemcontext, ROLENAME_ORIGINAL);
+        $options = array();
+        foreach ($roles as $key => $value) {
+            if($value->id == $id)
+                return $value->localname;
+        }
+        return '';
     }
 }
