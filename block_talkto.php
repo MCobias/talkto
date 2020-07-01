@@ -40,6 +40,19 @@ class block_talkto extends block_base {
 
         if($role > 3)$rolesecond = 4;
 
+        $editrolelocal = '';
+        if (is_siteadmin()) {
+            $pageparam = array('courseid' => $COURSE->id,
+                'id' => $idrolelocal);
+            //edit role local
+            $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
+            $editpicurl = new moodle_url('/pix/i/grademark.gif');
+            $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'pull-right', 'width' => '5%')));
+        }
+
+        $this->content->text = "";
+        $this->content->text .= $editrolelocal;
+
         if(!is_siteadmin()) {
             if (user_has_role_assignment($USER->id, $role)) {
                 $urlparams = array(
@@ -54,7 +67,7 @@ class block_talkto extends block_base {
                 $profile = $picture->get_url($PAGE);
 
                 //Render box tutor
-                $this->content->text = '<div class="box-content">';
+                $this->content->text .= '<div class="box-content">';
                 $this->content->text .= '<ul class="boxes">';
                 $this->content->text .= '<li class="box">';
 
@@ -148,7 +161,7 @@ class block_talkto extends block_base {
                         $profile = $picture->get_url($PAGE);
 
                         //Render box tutor
-                        $this->content->text = '<div class="box-content">';
+                        $this->content->text .= '<div class="box-content">';
                         $this->content->text .= '<ul class="boxes">';
                         $this->content->text .= '<li class="box">';
 
@@ -191,19 +204,6 @@ class block_talkto extends block_base {
             }
             else
             {
-                $editrolelocal = '';
-                if (is_siteadmin()) {
-                    $pageparam = array('courseid' => $COURSE->id,
-                        'id' => $idrolelocal);
-                    //edit role local
-                    $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
-                    $editpicurl = new moodle_url('/pix/i/grademark.gif');
-                    $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'pull-right', 'width' => '5%')));
-                }
-
-                $this->content->text = "";
-                $this->content->text .= $editrolelocal;
-
                 foreach ($teachers as $teacher) {
                     $picture = '';
                     $picture = new user_picture($teacher);
@@ -232,41 +232,31 @@ class block_talkto extends block_base {
                         $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
                     }
 
-                    //Render box tutor
-                    $this->content->text .= '<div class="box-content">';
-                    $this->content->text .= '<ul class="boxes">';
+                    //Render box
                     $this->content->text .= $edit;
-                    $this->content->text .= '<li class="box">';
-
-                    $this->content->text .= '<p class="">'.$titlerole.'</p>';
 
                     $now = strtotime(date("Y-m-d H:i:s"));
                     $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
                     $secs = $now - $lastacess;
 
-                    if ($secs < 350) {
-                        $this->content->text .= '<span style="margin-right: 10px;" class="text-success pull-right">(Online)</span></br>';
-                    } else {
-                        $this->content->text .= '<span style="margin-left: -10px;" class="text-danger pull-right">(Offline)</span></br>';
-                    }
-
-                    $this->content->text .= '<img src="' . $profile . '"/>';
-
-                    $this->content->text .= '<div class="row pull-right">';
 
                     $name = $teacher->firstname;
                     preg_replace('/\s(d[A-z]{1,2}|a(.){1,2}?|e(.){1,2}?|le{1}|[A-z.]{1,2}\s)/i', ' ', $name);
                     preg_replace('/\s+/i', ' ', $name);
                     $name = explode(" ", $teacher->firstname);
 
-                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></span></br>';
-                    $this->content->text .= '<span><a href="#" class="perfil_supervisor_link brand close-modal-small" data-toggle="modal" data-target="#modalSupervisorChat">'.get_string('presentationother', 'block_talkto').' '.$titlerole.'</a></span>';
-                    $this->content->text .= '</div">';
+                    $this->content->text .='<div class="row"><div class="col-md-3 ml-lg-5"><div class="panel">';
 
-                    $this->content->text .= '</li>';
-                    $this->content->text .= '</ul>';
-                    $this->content->text .= '</div>';
-                    
+                    if ($secs < 350) $this->content->text .= '<p class="text-success">'.$titlerole.' (online)</p>';
+                    else $this->content->text .= '<p class="text-danger">'.$titlerole.' (offline)</p>';
+
+                    $this->content->text .='<div class="panel-body"><div class="inner-all"><ul class="list-unstyled">';
+                    $this->content->text .='<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile. '" alt="Marint month"></li>';
+                    $this->content->text .='<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></h5>';
+                    $this->content->text .='<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">'.get_string('presentationother', 'block_talkto').' '.$titlerole.'</a></li>';
+                    $this->content->text .='</ul></div>';
+                    $this->content->text .='</div></div></div>';
+
                     include 'chatbox.php';
 
                     $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
@@ -348,7 +338,7 @@ class block_talkto extends block_base {
 
     public function instance_delete(){
         global $DB;
-        $DB->delete_records('block_talkto', array('blockid' => $this->instance->id));
+        $DB->delete_records('block_talkto', array('id' => $this->instance->id));
     }
 
     public function get_name_role($id){

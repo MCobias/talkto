@@ -1,120 +1,29 @@
 .block_talkto {
-    width:340px;
-    overflow-x:hidden;
-    margin-bottom: 0;
-    float: right;
+    width:300px;
 }
 
-@media only screen and (min-width: 480px) {
-
+.block_talkto .panel {
+    border: none;
+    background-color: #302F51;
+    border-radius: 10px;
 }
 
-@media only screen and (min-width: 600px) {
-
+.block_talkto .panel p{
+    font-weight: bold;
+    margin-right: 10px;
+    padding-top: 5px;
+    text-align: right;
 }
 
-@media only screen and (min-width: 768px) {
-
-}
-
-@media only screen and (min-width: 1024px) {
-    .block_perfil_supervisor {
-        width:300px;
-        overflow-x:hidden;
-        margin-top: 11%;
-        margin-bottom: 0;
-        float: right;
-        margin-right: 0%;
-    }
+.block_talkto .panel-body {
+    background-color: #CAE4FB;
+    border-radius: 0;
 }
 
 .block_talkto .modal-perfil {
     width:500px;
     height:auto;
-    margin-top: -30px;
-    margin-bottom: 0px;
-    right: 0;
-    left: 50%;
     position: fixed;
-}
-
-.block_talkto .alert-danger {
-    width: 150px;
-    margin-top: 45px;
-}
-
-.block_talkto .alert-danger h8 {
-    font-weight: bold;
-}
-
-.block_talkto .alert-danger p {
-    border-top: 1px solid #A91D22;
-    text-align: center;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.block_talkto .box-content ul.boxes .box {
-    width: 250px;
-    list-style-type: none;
-    padding: 7px 10px 5px 10px;
-    vertical-align: top;
-    border-top: 0.45em solid transparent;
-    box-shadow: 2px 4px 5px 0 #bdbdbd;
-}
-
-.block_talkto .box-content ul.boxes li.box p {
-    font-size: 20px;
-    text-transform: none;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-}
-
-.block_talkto .box-content ul.boxes li.box img {
-    width: 100px;
-    height: auto;
-    margin-right: 0;
-    margin-left: -65px;
-    padding-top: 10px;
-    padding-bottom: 40px;
-}
-
-.block_talkto .box-content ul.boxes li.box .row {
-    display: inline-block;
-    margin-top: 110px;
-}
-
-.block_talkto .box-content ul.boxes li.box span {
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.block_talkto .box-content ul.boxes .box {
-    border-top-color: #302F51;
-    background-color: #CAE4FB;
-    border-radius: 0;
-}
-
-#talkto_form {
-    padding: 2em;
-}
-
-#talkto_form .mform .fitem div.fitemtitle {
-    width: 8em;
-}
-
-#talkto_form .mform .fitem .felement {
-    margin-left: 10em;
-}
-
-#talkto_form textarea {
-    width: 80%;
-}
-
-.talkto_confirm {
-    font-size: 2em;
-    font-weight: bold;
-    margin-top: 1em;
 }
 
 .block_talkto .modal-body {
