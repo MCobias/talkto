@@ -19,5 +19,6 @@ $string['titleformbox']        = 'Configuração';
 $string['titleinputrole']      = 'Titulo do box';
 $string['rolecourse']          = 'Regra local para o papel';
 $string['pluginname']          = 'Talkto';
-
+$string['messageeroleerror']   = 'Nenhum papel definido. Entre em contato com o suporte.';
+$string['messageegrouperror']  = 'Nenhum grupo definido. Entre em contato com o suporte.';
 

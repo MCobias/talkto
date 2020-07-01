@@ -115,11 +115,11 @@ class block_talkto extends block_base {
                         $usergroupings = groups_get_user_groups($COURSE->id, $USER->id);
 
                         if (empty($usergroupings)) {
-                            throw new Exception(str_replace('MSG', 'Nenhum grupo definido. Entre em contato com o suporte.', $msgrr));
+                            throw new Exception(str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr));
                         } else {
                             foreach ($usergroupings as $usergroups) {
                                 if (empty($usergroups)) {
-                                    throw new Exception(str_replace('MSG', 'Nenhum grupo definido. Entre em contato com o suporte.', $msgrr));
+                                    throw new Exception(str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr));
                                 } else {
                                     foreach ($usergroups as $usergroup) {
                                         foreach ($teachers as $teacher) {
@@ -131,7 +131,7 @@ class block_talkto extends block_base {
                                 }
                             }
                             if (empty($groupteachers)) {
-                                throw new Exception(str_replace('MSG', 'Nenhum grupo definido. Entre em contato com o suporte.', $msgrr));
+                                throw new Exception(str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr));
                             } else {
                                 $teachers = $groupteachers;
                             }
@@ -186,7 +186,7 @@ class block_talkto extends block_base {
                         $this->content->text .= '</div>';
                     }
                 } else {
-                    $this->content->text = str_replace('MSG', 'Nenhum grupo definido. Entre em contato com o suporte.', $msgrr);
+                    $this->content->text = str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr);
                 }
             }
             else
@@ -195,7 +195,6 @@ class block_talkto extends block_base {
                 if (is_siteadmin()) {
                     $pageparam = array('courseid' => $COURSE->id,
                         'id' => $idrolelocal);
-
                     //edit role local
                     $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
                     $editpicurl = new moodle_url('/pix/i/grademark.gif');
@@ -300,7 +299,7 @@ class block_talkto extends block_base {
             }
         }
         else {
-            $this->content->text = str_replace('MSG', 'Nenhum Tutor definido. Entre em contato com o suporte.', $msgrr);
+            $this->content->text = str_replace('MSG', get_string('messageeroleerror', 'block_talkto'), $msgrr);
         }
         //$PAGE->requires->css('/blocks/menu_mural_virtual/style.css');
         return $this->content;
