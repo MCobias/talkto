@@ -19,3 +19,10 @@ $settings->add(new admin_setting_configselect('block_talkto/role',
                                            get_string('roleinclude', 'block_talkto'),
                                            get_string('roledesc', 'block_talkto'),null,
                                            $options));
+
+$settings->add(new admin_setting_configcheckbox(
+    'helloworld/Colored_Text',
+    get_string('settigsroleglobal', 'block_talkto'),
+    get_string('descsettigsroleglobal', 'block_talkto'),
+    '1'
+));

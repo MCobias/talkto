@@ -2,17 +2,25 @@
     width:300px;
 }
 
-.block_talkto .panel {
+.block_talkto .panel-box{
     border: none;
     background-color: #302F51;
     border-radius: 10px;
+    vertical-align: top;
+    box-shadow: 5px 5px 5px 0 #bdbdbd;
 }
 
-.block_talkto .panel p{
+.block_talkto .panel-box p{
     font-weight: bold;
+    font-size: 16px;
     margin-right: 10px;
-    padding-top: 5px;
+    padding-top: 10px;
     text-align: right;
+}
+
+.block_talkto .icon-editbox{
+    padding-left: 30px;
+    margin-top: 3px;
 }
 
 .block_talkto .panel-body {

@@ -229,12 +229,10 @@ class block_talkto extends block_base {
                         //edit
                         $editurl = new moodle_url('/blocks/talkto/editbox.php', $pageparam);
                         $editpicurl = new moodle_url('/pix/i/admin.gif');
-                        $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
+                        $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'icon-editbox')));
                     }
 
                     //Render box
-                    $this->content->text .= $edit;
-
                     $now = strtotime(date("Y-m-d H:i:s"));
                     $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
                     $secs = $now - $lastacess;
@@ -245,15 +243,16 @@ class block_talkto extends block_base {
                     preg_replace('/\s+/i', ' ', $name);
                     $name = explode(" ", $teacher->firstname);
 
-                    $this->content->text .='<div class="row"><div class="col-md-3 ml-lg-5"><div class="panel">';
+                    $this->content->text .='<div class="row"><div class="col-md-3 ml-lg-5"><div class="panel-box">';
 
-                    if ($secs < 350) $this->content->text .= '<p class="text-success">'.$titlerole.' (online)</p>';
-                    else $this->content->text .= '<p class="text-danger">'.$titlerole.' (offline)</p>';
+                    if ($secs < 350) $this->content->text .= '<p class="text-success"><i class="fas fa-circle"></i> '.$edit." ".$titlerole.' (online) <i class="fas fa-headset"></i></p>';
+                    else $this->content->text .= '<p class="text-danger">'.$edit." ".$titlerole. ' (offline)</p>';
 
                     $this->content->text .='<div class="panel-body"><div class="inner-all"><ul class="list-unstyled">';
                     $this->content->text .='<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile. '" alt="Marint month"></li>';
                     $this->content->text .='<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></h5>';
-                    $this->content->text .='<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">'.get_string('presentationother', 'block_talkto').' '.$titlerole.'</a></li>';
+                    $this->content->text .='<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto'). '</a></h5>';
+                    $this->content->text .='<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">'.get_string('presentationother', 'block_talkto').' '.$titlerole.' <span class="far fa-comment"></span></a></li>';
                     $this->content->text .='</ul></div>';
                     $this->content->text .='</div></div></div>';
 

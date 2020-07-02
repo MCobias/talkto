@@ -8,17 +8,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['presentationme']      = 'Eu sou ';
-$string['presentationother']   = 'Fale com o ';
-$string['roleinclude']         = 'Papel: ';
-$string['roledesc']            = 'Selecione o tipo do papel para criação do box.';
-$string['talktosettings']      = 'Configuração';
-$string['editbox']             = 'Editar box';
-$string['editrolelocal']       = 'Editar papel local';
-$string['titleformbox']        = 'Configuração';
-$string['titleinputrole']      = 'Titulo do box';
-$string['rolecourse']          = 'Regra local para o papel';
-$string['pluginname']          = 'Talkto';
-$string['messageeroleerror']   = 'Nenhum papel definido. Entre em contato com o suporte.';
-$string['messageegrouperror']  = 'Nenhum grupo definido. Entre em contato com o suporte.';
-
+$string['presentationme']         = 'Eu sou ';
+$string['openprofile']         = 'Quem sou eu';
+$string['presentationother']      = 'Fale com o ';
+$string['roleinclude']            = 'Papel: ';
+$string['roledesc']               = 'Selecione o tipo do papel para criação do box';
+$string['talktosettings']         = 'Configuração';
+$string['editbox']                = 'Editar box';
+$string['editrolelocal']          = 'Editar papel local';
+$string['titleformbox']           = 'Configuração';
+$string['titleinputrole']         = 'Titulo do box';
+$string['rolecourse']             = 'Regra local para o papel';
+$string['pluginname']             = 'Talkto';
+$string['messageeroleerror']      = 'Nenhum papel definido. Entre em contato com o suporte';
+$string['messageegrouperror']     = 'Nenhum grupo definido. Entre em contato com o suporte';
+$string['settigsroleglobal']      = 'Papel global';
+$string['descsettigsroleglobal']  = 'Usar o mesmo tipo de papel em todos os cursos';
