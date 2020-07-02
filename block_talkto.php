@@ -238,7 +238,7 @@ class block_talkto extends block_base {
                 $groupteachers = array();
                 $usergroupings = groups_get_user_groups($COURSE->id, $USER->id);
 
-                var_dump($usergroupings);
+                #var_dump($usergroupings);
 
                 if (empty($usergroupings)) {
                     return get_string('messageegrouperror', 'block_talkto');
