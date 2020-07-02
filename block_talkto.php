@@ -25,7 +25,8 @@ class block_talkto extends block_base {
         $this->content = new stdClass();
 
         $rolesecond = 3;
-        $role = get_config('block_talkto', 'role');
+        $role = get_config('talkto', 'role');
+        $isglobal = get_config('talkto', 'isglobal');
 
         $idrolelocal = 0;
         $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
@@ -33,264 +34,125 @@ class block_talkto extends block_base {
         var_dump($settingsrolelocal);
 
 
-        if(!empty($settingsrolelocal)){
+        if(!empty($settingsrolelocal) and !$isglobal){
             $idrolelocal = $settingsrolelocal->id;
             $role = $settingsrolelocal->roleid;
         }
 
-        if($role > 3)$rolesecond = 4;
+        $role = 4;
+        var_dump($isglobal);
 
         $editrolelocal = '';
-        if (is_siteadmin()) {
+        if (is_siteadmin() and !$isglobal) {
             $pageparam = array('courseid' => $COURSE->id,
                 'id' => $idrolelocal);
             //edit role local
             $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
-            $editpicurl = new moodle_url('/pix/i/grademark.gif');
-            $editrolelocal = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'pull-right', 'width' => '5%')));
+            $editrolelocal = html_writer::link($editurl, html_writer::tag('span', '', array('class' => 'fas fa-2x fa-user-tag', 'alt' => get_string('edit'))));
         }
 
         $this->content->text = "";
         $this->content->text .= $editrolelocal;
 
+
+        ### verificar se o mesmo e o professor ###
         if(!is_siteadmin()) {
             if (user_has_role_assignment($USER->id, $role)) {
-                $urlparams = array(
-                    'courseid' => $COURSE->id,
-                    'referurl' => $this->page->url->out(),
-                    'recipientid' => $USER->id
-                );
 
+            }
+        }
+
+        ### verifica se e o tutor
+        if (!is_siteadmin() and !user_has_role_assignment($USER->id, $rolesecond)) {
+
+        }
+
+        $teachers = $this->get_teacher($role, $rolesecond);
+
+        if (!empty($teachers)) {
+            foreach ($teachers as $teacher) {
                 $picture = '';
-                $picture = new user_picture($USER);
+                $picture = new user_picture($teacher);
                 $picture->size = 200;
                 $profile = $picture->get_url($PAGE);
 
-                //Render box tutor
-                $this->content->text .= '<div class="box-content">';
-                $this->content->text .= '<ul class="boxes">';
-                $this->content->text .= '<li class="box">';
+                $idbox = 0;
+                $titlerole = get_string('titledefault', 'block_talkto');
+                $settingsbox = $DB->get_record('block_talkto', ['userid' => $teacher->id, 'courseid' => $COURSE->id]);
 
-                $this->content->text .= '<p class="pull-left">'.$this->get_name_role($role).'</p>';
+                if (!empty($settingsbox)) {
+                    $idbox = $settingsbox->id;
+                    if ($settingsbox->titlerole != '') {
+                        $titlerole = $settingsbox->titlerole;
+                    }
+                }
+                $edit = '';
+                if (is_siteadmin()) {
+                    $pageparam = array('courseid' => $COURSE->id,
+                        'userid' => $teacher->id,
+                        'id' => $idbox);
+
+                    //edit
+                    $editurl = new moodle_url('/blocks/talkto/editbox.php', $pageparam);
+                    $edit = html_writer::link($editurl, html_writer::tag('span', '', array('class' => 'fas fa-wrench icon-editbox', 'alt' => get_string('edit'))));
+                }
+
+                //Render box
                 $now = strtotime(date("Y-m-d H:i:s"));
-                $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $USER->lastaccess)));
+                $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
                 $secs = $now - $lastacess;
 
-                if ($secs < 350) {
-                    $this->content->text .= '<span style="margin-right: 10px;" class="text-success pull-right">(Online)</span></br>';
-                } else {
-                    $this->content->text .= '<span style="margin-left: -10px;" class="text-danger pull-right">(Offline)</span></br>';
-                }
-
-                $this->content->text .= '<img src="' . $profile . '"/>';
-
-                $this->content->text .= '<div class="row pull-right">';
-
-                $name = $USER->firstname;
+                $name = $teacher->firstname;
                 preg_replace('/\s(d[A-z]{1,2}|a(.){1,2}?|e(.){1,2}?|le{1}|[A-z.]{1,2}\s)/i', ' ', $name);
                 preg_replace('/\s+/i', ' ', $name);
-                $name = explode(" ", $USER->firstname);
+                $name = explode(" ", $teacher->firstname);
 
-                $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                $this->content->text .= '<span class="pull-right"><a class="talkto_link">'.get_string('presentationme', 'block_talkto').$this->get_name_role($role).'</a></span>';
-                $this->content->text .= '</div">';
+                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5"><div class="panel-box">';
 
-                $this->content->text .= '</li>';
-                $this->content->text .= '</ul>';
+                if ($secs < 350) $this->content->text .= '<p class="text-success"><i class="fas fa-circle"></i> ' . $edit . " " . $titlerole . ' (online) <i class="fas fa-headset"></i></p>';
+                else $this->content->text .= '<p class="text-danger">' . $edit . " " . $titlerole . ' (offline)</p>';
+
+                $this->content->text .= '<div class="panel-body"><div class="inner-all"><ul class="list-unstyled">';
+                $this->content->text .= '<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile . '" alt="Marint month"></li>';
+                $this->content->text .= '<li class="text-center"><h8 class=""><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto') . '</a></h8>';
+                $this->content->text .= '<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></h5>';
+                $this->content->text .= '<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
+                $this->content->text .= '</ul></div>';
+                $this->content->text .= '</div></div></div>';
+
+                include 'chatbox.php';
+
+                $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
+                $this->content->text .= '<div class="" role="document">';
+                $this->content->text .= '<div class="modal-content">';
+                $this->content->text .= '<div class="modal-body">';
+                $this->content->text .= '<button class="fas fa-window-close fa-1x" data-dismiss="modal" aria-label="Fechar"></button>';
+                $this->content->text .= '<div id="page-header">';
+                $this->content->text .= $html;
+                $this->content->text .= '</div></div></div></div></div>';
+
+                $this->content->text .= '<div style="width: 60%;" id="modalSupervisor" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
+                $this->content->text .= '<div class="" role="document">';
+                $this->content->text .= '<div class="modal-content">';
+                $this->content->text .= '<div class="modal-body">';
+                $this->content->text .= '<div id="page-header">';
+                $this->content->text .= '<button class="fas fa-window-close fa-2x pull-right" data-dismiss="modal" aria-label="Fechar"></button>';
+                $this->content->text .= '<div class="page-context-header">';
+                $this->content->text .= '<div class="page-header-image">';
+                $this->content->text .= '<a href="/ava/user/profile.php?id= ' . $teacher->id . '">';
+                $this->content->text .= '<img style="width: 30%;" src="' . $profile . '">';
+                $this->content->text .= '<div class="description"><p></p>' . $teacher->email . '</div>';
+                $this->content->text .= '</a></div><div class="page-header-headings"><h6>' . $teacher->firstname . '</h6></div>';
                 $this->content->text .= '</div>';
-                return $this->content;
+
+                $this->content->text .= '<div class="description"><p></p>' . $teacher->description . '</div>';
+
+                $this->content->text .= '</div></div></div></div></div>';
             }
+        }else {
+            $this->content->text = '<div class="alert alert-danger" role="alert"><h8 class="alert-heading">Oops</h8><p class="mb-0">'.$teachers.'</p></div>';
+
         }
-
-        //Lista de usuarios com perfil de tutor
-        list($usql, $uparams) = $DB->get_in_or_equal($role);
-        $params = array($COURSE->id, CONTEXT_COURSE);
-        $coursehasgroups = groups_get_all_groups($COURSE->id);
-        //print_r(array_values ($coursehasgroups));
-
-        $select = 'SELECT DISTINCT u.id, u.firstname, u.lastname, u.lastaccess, u.picture, u.description, u.email ';
-        $from = 'FROM {role_assignments} ra
-		JOIN {context} c ON ra.contextid = c.id
-		JOIN {user} u ON u.id = ra.userid ';
-        $where = 'WHERE ((c.instanceid = ? AND c.contextlevel = ?))';
-
-        $params = array_merge($params, array($USER->id), $uparams);
-        $where .= ' AND userid != ? AND roleid '.$usql;
-        $order = ' ORDER BY u.firstname ASC, u.lastname';
-
-        $msgrr = '<div class="alert alert-danger" role="alert"><h8 class="alert-heading">Oops</h8><p class="mb-0">MSG</p></div>';
-
-        if ($teachers = $DB->get_records_sql($select.$from.$where.$order, $params)) {
-            if (!is_siteadmin() and !user_has_role_assignment($USER->id, $rolesecond)) {
-                if ($coursehasgroups) {
-                    try {
-                        $groupteachers = array();
-                        $usergroupings = groups_get_user_groups($COURSE->id, $USER->id);
-
-                        if (empty($usergroupings)) {
-                            throw new Exception(str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr));
-                        } else {
-                            foreach ($usergroupings as $usergroups) {
-                                if (empty($usergroups)) {
-                                    throw new Exception(str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr));
-                                } else {
-                                    foreach ($usergroups as $usergroup) {
-                                        foreach ($teachers as $teacher) {
-                                            if ((groups_is_member($usergroup, $teacher->id))) {
-                                                $groupteachers[$teacher->id] = $teacher;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (empty($groupteachers)) {
-                                throw new Exception(str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr));
-                            } else {
-                                $teachers = $groupteachers;
-                            }
-                        }
-                    } catch (Exception $e) {
-                        $this->content->text = $e->getMessage();
-                        return $this->content;
-                    }
-
-                    foreach ($teachers as $teacher) {
-                        $picture = '';
-                        $picture = new user_picture($teacher);
-                        $picture->size = 200;
-                        $profile = $picture->get_url($PAGE);
-
-                        //Render box tutor
-                        $this->content->text .= '<div class="box-content">';
-                        $this->content->text .= '<ul class="boxes">';
-                        $this->content->text .= '<li class="box">';
-
-                        $this->content->text .= '<p class="pull-left">'.$this->get_name_role($role).'</p>';
-
-                        $now = strtotime(date("Y-m-d H:i:s"));
-                        $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
-                        $secs = $now - $lastacess;
-
-                        if ($secs < 350) {
-                            $this->content->text .= '<span style="margin-right: 10px;" class="text-success pull-right">(Online)</span></br>';
-                        } else {
-                            $this->content->text .= '<span style="margin-left: -10px;" class="text-danger pull-right">(Offline)</span></br>';
-                        }
-
-                        $this->content->text .= '<img src="' . $profile . '"/>';
-
-                        $this->content->text .= '<div class="row pull-right">';
-
-                        $name = $teacher->firstname;
-                        preg_replace('/\s(d[A-z]{1,2}|a(.){1,2}?|e(.){1,2}?|le{1}|[A-z.]{1,2}\s)/i', ' ', $name);
-                        preg_replace('/\s+/i', ' ', $name);
-                        $name = explode(" ", $teacher->firstname);
-
-                        setcookie('fale_tutor_' . $urlparams['courseid'], $name[0] . ' ' . $name[1]);
-                        setcookie('fale_tutor_url_' . $urlparams['courseid'], $url);
-                        setcookie('fale_tutor_img_' . $urlparams['courseid'], $profile);
-
-                        $this->content->text .= '<span class="pull-right">' . $name[0] . ' ' . $name[count($name) - 1] . '</span></br>';
-                        $this->content->text .= '<span class="pull-right"><a href="#" class="talkto_link">'.get_string('presentationother', 'block_talkto').$this->get_name_role($role).'</a></span>';
-                        $this->content->text .= '</div">';
-
-                        $this->content->text .= '</li>';
-                        $this->content->text .= '</ul>';
-                        $this->content->text .= '</div>';
-                    }
-                } else {
-                    $this->content->text = str_replace('MSG', get_string('messageegrouperror', 'block_talkto'), $msgrr);
-                }
-            }
-            else
-            {
-                foreach ($teachers as $teacher) {
-                    $picture = '';
-                    $picture = new user_picture($teacher);
-                    $picture->size = 200;
-                    $profile = $picture->get_url($PAGE);
-
-                    $idbox = 0;
-                    $titlerole = 'Talkt♾';
-                    $settingsbox = $DB->get_record('block_talkto', ['userid'=>$teacher->id, 'courseid'=>$COURSE->id]);
-
-                    if(!empty($settingsbox)){
-                        $idbox = $settingsbox->id;
-                        if($settingsbox->titlerole !='') {
-                            $titlerole = $settingsbox->titlerole;
-                        }
-                    }
-                    $edit = '';
-                    if (is_siteadmin()) {
-                        $pageparam = array('courseid' => $COURSE->id,
-                            'userid'=>$teacher->id,
-                            'id' => $idbox);
-
-                        //edit
-                        $editurl = new moodle_url('/blocks/talkto/editbox.php', $pageparam);
-                        $editpicurl = new moodle_url('/pix/i/admin.gif');
-                        $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'), 'class' => 'icon-editbox')));
-                    }
-
-                    //Render box
-                    $now = strtotime(date("Y-m-d H:i:s"));
-                    $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
-                    $secs = $now - $lastacess;
-
-
-                    $name = $teacher->firstname;
-                    preg_replace('/\s(d[A-z]{1,2}|a(.){1,2}?|e(.){1,2}?|le{1}|[A-z.]{1,2}\s)/i', ' ', $name);
-                    preg_replace('/\s+/i', ' ', $name);
-                    $name = explode(" ", $teacher->firstname);
-
-                    $this->content->text .='<div class="row"><div class="col-md-3 ml-lg-5"><div class="panel-box">';
-
-                    if ($secs < 350) $this->content->text .= '<p class="text-success"><i class="fas fa-circle"></i> '.$edit." ".$titlerole.' (online) <i class="fas fa-headset"></i></p>';
-                    else $this->content->text .= '<p class="text-danger">'.$edit." ".$titlerole. ' (offline)</p>';
-
-                    $this->content->text .='<div class="panel-body"><div class="inner-all"><ul class="list-unstyled">';
-                    $this->content->text .='<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile. '" alt="Marint month"></li>';
-                    $this->content->text .='<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></h5>';
-                    $this->content->text .='<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto'). '</a></h5>';
-                    $this->content->text .='<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">'.get_string('presentationother', 'block_talkto').' '.$titlerole.' <span class="far fa-comment"></span></a></li>';
-                    $this->content->text .='</ul></div>';
-                    $this->content->text .='</div></div></div>';
-
-                    include 'chatbox.php';
-
-                    $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
-                    $this->content->text .= '<div class="" role="document">';
-                    $this->content->text .= '<div class="modal-content">';
-                    $this->content->text .= '<div class="modal-body">';
-                    $this->content->text .= '<button class="fas fa-window-close fa-1x" data-dismiss="modal" aria-label="Fechar"></button>';
-                    $this->content->text .= '<div id="page-header">';
-                    $this->content->text .= $html;
-                    $this->content->text .= '</div></div></div></div></div>';
-
-                    $this->content->text .= '<div style="width: 60%;" id="modalSupervisor" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
-                    $this->content->text .= '<div class="" role="document">';
-                    $this->content->text .= '<div class="modal-content">';
-                    $this->content->text .= '<div class="modal-body">';
-                    $this->content->text .= '<div id="page-header">';
-                    $this->content->text .= '<button class="fas fa-window-close fa-2x pull-right" data-dismiss="modal" aria-label="Fechar"></button>';
-                    $this->content->text .= '<div class="page-context-header">';
-                    $this->content->text .= '<div class="page-header-image">';
-                    $this->content->text .= '<a href="/ava/user/profile.php?id= ' . $teacher->id . '">';
-                    $this->content->text .= '<img style="width: 30%;" src="' . $profile. '">';
-                    $this->content->text .= '<div class="description"><p></p>' . $teacher->email . '</div>';
-                    $this->content->text .= '</a></div><div class="page-header-headings"><h6>' . $teacher->firstname . '</h6></div>';
-                    $this->content->text .= '</div>';
-
-                    $this->content->text .= '<div class="description"><p></p>' . $teacher->description . '</div>';
-
-                    $this->content->text .= '</div></div></div></div></div>';
-                }
-            }
-        }
-        else {
-            $this->content->text = str_replace('MSG', get_string('messageeroleerror', 'block_talkto'), $msgrr);
-        }
-        //$PAGE->requires->css('/blocks/menu_mural_virtual/style.css');
         return $this->content;
     }
 
@@ -313,7 +175,7 @@ class block_talkto extends block_base {
 
     public function instance_allow_multiple()
     {
-        return true;
+        return false;
     }
 
     function hide_header() {
@@ -349,5 +211,64 @@ class block_talkto extends block_base {
                 return $value->localname;
         }
         return '';
+    }
+
+    public function get_teacher($role)
+    {
+        global $DB, $COURSE, $USER;
+        //Lista de usuarios com perfil de tutor
+        list($usql, $uparams) = $DB->get_in_or_equal($role);
+        $params = array($COURSE->id, CONTEXT_COURSE);
+        //print_r(array_values ($coursehasgroups));
+
+        $select = 'SELECT DISTINCT u.id, u.firstname, u.lastname, u.lastaccess, u.picture, u.description, u.email ';
+        $from = 'FROM {role_assignments} ra
+		JOIN {context} c ON ra.contextid = c.id
+		JOIN {user} u ON u.id = ra.userid ';
+        $where = 'WHERE ((c.instanceid = ? AND c.contextlevel = ?))';
+
+        $params = array_merge($params, array($USER->id), $uparams);
+        $where .= ' AND userid != ? AND roleid ' . $usql;
+        $order = ' ORDER BY u.firstname ASC, u.lastname';
+
+        $teachers = $DB->get_records_sql($select . $from . $where . $order, $params);
+        $coursehasgroups = groups_get_all_groups($COURSE->id);
+
+
+        var_dump($teachers);
+        
+        ### filtro para grupos ###
+        if (!empty($teachers)) {
+            if ($coursehasgroups) {
+                $groupteachers = array();
+                $usergroupings = groups_get_user_groups($COURSE->id, $USER->id);
+
+                var_dump($usergroupings);
+
+                if (empty($usergroupings)) {
+                    return get_string('messageegrouperror', 'block_talkto');
+                } else {
+                    foreach ($usergroupings as $usergroups) {
+                        if (empty($usergroups)) {
+                            return get_string('messageegrouperror', 'block_talkto');
+                        } else {
+                            foreach ($usergroups as $usergroup) {
+                                foreach ($teachers as $teacher) {
+                                    if ((groups_is_member($usergroup, $teacher->id))) {
+                                        $groupteachers[$teacher->id] = $teacher;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (empty($groupteachers)) {
+                        return get_string('messageegrouperror', 'block_talkto');
+                    } else {
+                        $teachers = $groupteachers;
+                    }
+                }
+            }
+        }
+        return $teachers;
     }
 }

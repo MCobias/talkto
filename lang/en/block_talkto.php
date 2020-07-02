@@ -8,8 +8,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['titledefault']         = 'Talkt♾';
 $string['presentationme']         = 'Eu sou ';
-$string['openprofile']         = 'Quem sou eu';
+$string['openprofile']            = 'Abrir perfil';
 $string['presentationother']      = 'Fale com o ';
 $string['roleinclude']            = 'Papel: ';
 $string['roledesc']               = 'Selecione o tipo do papel para criação do box';
