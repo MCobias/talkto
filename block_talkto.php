@@ -31,16 +31,13 @@ class block_talkto extends block_base {
         $idrolelocal = 0;
         $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
 
-        var_dump($settingsrolelocal);
-
+        #var_dump($settingsrolelocal);
+        #var_dump($isglobal);
 
         if(!empty($settingsrolelocal) and !$isglobal){
             $idrolelocal = $settingsrolelocal->id;
             $role = $settingsrolelocal->roleid;
         }
-
-        $role = 4;
-        var_dump($isglobal);
 
         $editrolelocal = '';
         if (is_siteadmin() and !$isglobal) {
@@ -54,8 +51,7 @@ class block_talkto extends block_base {
         $this->content->text = "";
         $this->content->text .= $editrolelocal;
 
-
-        ### verificar se o mesmo e o professor ###
+        /*### verificar se o mesmo e o professor ###
         if(!is_siteadmin()) {
             if (user_has_role_assignment($USER->id, $role)) {
 
@@ -65,7 +61,7 @@ class block_talkto extends block_base {
         ### verifica se e o tutor
         if (!is_siteadmin() and !user_has_role_assignment($USER->id, $rolesecond)) {
 
-        }
+        }*/
 
         $teachers = $this->get_teacher($role, $rolesecond);
 
@@ -234,9 +230,8 @@ class block_talkto extends block_base {
         $teachers = $DB->get_records_sql($select . $from . $where . $order, $params);
         $coursehasgroups = groups_get_all_groups($COURSE->id);
 
+        #var_dump($teachers);
 
-        var_dump($teachers);
-        
         ### filtro para grupos ###
         if (!empty($teachers)) {
             if ($coursehasgroups) {
