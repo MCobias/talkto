@@ -111,7 +111,7 @@ class block_talkto extends block_base {
                 $this->content->text .= '<div class="panel-body"><div class="inner-all"><ul class="list-unstyled">';
                 $this->content->text .= '<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile . '" alt="Marint month"></li>';
                 $this->content->text .= '<li class="text-center"><h8 class=""><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto') . '</a></h8>';
-                $this->content->text .= '<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[0] . ' ' . $name[count($name) - 1] . '</a></h5>';
+                $this->content->text .= '<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[count($name) - 1] . '</a></h5>';
                 $this->content->text .= '<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
                 $this->content->text .= '</ul></div>';
                 $this->content->text .= '</div></div></div>';
