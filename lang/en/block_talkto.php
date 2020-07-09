@@ -25,3 +25,5 @@ $string['messageeroleerror']      = 'Nenhum papel definido. Entre em contato com
 $string['messageegrouperror']     = 'Nenhum grupo definido. Entre em contato com o suporte';
 $string['settigsroleglobal']      = 'Papel global';
 $string['descsettigsroleglobal']  = 'Usar o mesmo tipo de papel em todos os cursos';
+$string['settigsusegroup']      = 'Papel por grupo';
+$string['descsettigsusegroup']  = 'Mostrar o box do responsavel atribuido para cada grupo. Em caso de não possuir grupo mostrará uma mensagem de não existencia';

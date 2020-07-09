@@ -26,3 +26,10 @@ $settings->add(new admin_setting_configcheckbox(
     get_string('descsettigsroleglobal', 'block_talkto'),
     '1'
 ));
+
+$settings->add(new admin_setting_configcheckbox(
+    'talkto/usegroup',
+    get_string('settigsusegroup', 'block_talkto'),
+    get_string('descsettigsusegroup', 'block_talkto'),
+    '1'
+));
