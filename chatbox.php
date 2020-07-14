@@ -38,9 +38,4 @@ if ($userid) {
     }
 }
 
-$url = new moodle_url('/message/index.php');
-if ($userid) {
-    $url->param('id', $userid);
-}
-
 $html = \core_message\helper::render_messaging_widget(false, $userid, $conversationid, $view);

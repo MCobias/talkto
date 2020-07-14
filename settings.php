@@ -33,3 +33,24 @@ $settings->add(new admin_setting_configcheckbox(
     get_string('descsettigsusegroup', 'block_talkto'),
     '1'
 ));
+
+$settings->add(new admin_setting_configtext(
+    'talkto/panelbodycolor',
+    get_string('settigspanelbodycolor', 'block_talkto'),
+    get_string('descsettigspanelbodycolor', 'block_talkto'),
+    '#CAE4FB'
+));
+
+$settings->add(new admin_setting_configtext(
+    'talkto/panelheadcolor',
+    get_string('settigspanelheadcolor', 'block_talkto'),
+    get_string('descsettigspanelheadcolor', 'block_talkto'),
+    '#302F51'
+));
+
+$settings->add(new admin_setting_configtext(
+    'talkto/panelbuttoncolor',
+    get_string('settigspanelbuttoncolor', 'block_talkto'),
+    get_string('descsettigspanelbuttoncolor', 'block_talkto'),
+    '#302F51'
+));

@@ -93,6 +93,15 @@ class block_talkto extends block_base {
                     $edit = html_writer::link($editurl, html_writer::tag('span', '', array('class' => 'fas fa-wrench icon-editbox', 'alt' => get_string('edit'))));
                 }
 
+                $headcolor = preg_replace('/\s+/', '',get_config('talkto','panelheadcolor'));
+                $bodycolor = preg_replace('/\s+/', '',get_config('talkto','panelbodycolor'));
+                $buttoncolor = preg_replace('/\s+/', '',get_config('talkto','panelbuttoncolor'));
+
+                if($headcolor == '') $headcolor = '#302F51';
+                if($bodycolor == '') $bodycolor = '#CAE4FB';
+                if($buttoncolor == '') $buttoncolor = '#51A351';
+
+
                 //Render box
                 $now = strtotime(date("Y-m-d H:i:s"));
                 $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
@@ -103,16 +112,16 @@ class block_talkto extends block_base {
                 preg_replace('/\s+/i', ' ', $name);
                 $name = explode(" ", $teacher->firstname);
 
-                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5"><div class="panel-box">';
+                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
 
                 if ($secs < 350) $this->content->text .= '<p class="text-success"><i class="fas fa-circle"></i> ' . $edit . " " . $titlerole . ' (online) <i class="fas fa-headset"></i></p>';
                 else $this->content->text .= '<p class="text-danger">' . $edit . " " . $titlerole . ' (offline)</p>';
 
-                $this->content->text .= '<div class="panel-body"><div class="inner-all"><ul class="list-unstyled">';
+                $this->content->text .= '<div style="background-color:'.$bodycolor.';border-radius: 0;"><div class="inner-all"><ul class="list-unstyled">';
                 $this->content->text .= '<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile . '" alt="Marint month"></li>';
                 $this->content->text .= '<li class="text-center"><h8 class=""><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto') . '</a></h8>';
                 $this->content->text .= '<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[count($name) - 1] . '</a></h5>';
-                $this->content->text .= '<li><a href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn btn-success text-center btn-block">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
+                $this->content->text .= '<li><a style="background-color: '.$buttoncolor.'; background:'.$buttoncolor.';" href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn text-center btn-block">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
                 $this->content->text .= '</ul></div>';
                 $this->content->text .= '</div></div></div>';
 
@@ -150,15 +159,6 @@ class block_talkto extends block_base {
 
         }
         return $this->content;
-    }
-
-    public function html_attributes()
-    {
-        $attributes = parent::html_attributes();
-        if (get_config('helloworld', 'Colored_Text')) {
-            $attributes['class'] .= ' colored-text';
-        }
-        return $attributes;
     }
 
     public function applicable_formats() {
