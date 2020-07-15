@@ -10,6 +10,14 @@
     text-align: right;
 }
 
+.block_talkto .text-offline{
+    color: #FF4647;
+}
+
+.block_talkto .text-online{
+    color: #65AB66;
+}
+
 .block_talkto .icon-editbox{
     padding-right: 5px;
     margin-top: 3px;
@@ -25,4 +33,9 @@
 .block_talkto .modal-body {
     max-height: calc(100vh - 210px);
     overflow-y: auto;
+}
+
+.block_talkto .btn:hover{
+    color: black;
+    background: white;
 }

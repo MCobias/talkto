@@ -17,55 +17,31 @@ class block_talkto extends block_base {
 
     public function get_content() {
         global $COURSE, $USER, $DB, $PAGE;
-        $context = context_course::instance($COURSE->id);
-
         if ($this->content !== null or !$this->view_only_course()) {
             return $this->content;
         }
+        $role = get_config('talkto', 'role');
         $this->content = new stdClass();
 
-        $rolesecond = 3;
-        $role = get_config('talkto', 'role');
-        $isglobal = get_config('talkto', 'isglobal');
-
-        $idrolelocal = 0;
-        $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
-
-        #var_dump($settingsrolelocal);
-        #var_dump($isglobal);
-
-        if(!empty($settingsrolelocal) and !$isglobal){
-            $idrolelocal = $settingsrolelocal->id;
+        if(!get_config('talkto', 'isglobal')){
+            $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
             $role = $settingsrolelocal->roleid;
         }
 
-        $editrolelocal = '';
-        if (is_siteadmin() and !$isglobal) {
-            $pageparam = array('courseid' => $COURSE->id,
-                'id' => $idrolelocal);
-            //edit role local
-            $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
-            $editrolelocal = html_writer::link($editurl, html_writer::tag('span', '', array('class' => 'fas fa-2x fa-user-tag', 'alt' => get_string('edit'))));
-        }
-
         $this->content->text = "";
-        $this->content->text .= $editrolelocal;
+        $teachers = $this->get_teacher($role);
 
-        /*### verificar se o mesmo e o professor ###
-        if(!is_siteadmin()) {
-            if (user_has_role_assignment($USER->id, $role)) {
-
+        if (!is_string($teachers)) {
+            $editrolelocal = '';
+            if (is_siteadmin() and !get_config('talkto', 'isglobal')) {
+                $pageparam = array('courseid' => $COURSE->id,
+                    'id' => $role);
+                //edit role local
+                $editurl = new moodle_url('/blocks/talkto/editrole.php', $pageparam);
+                $editrolelocal = html_writer::link($editurl, html_writer::tag('span', '', array('class' => 'fas fa-2x fa-user-tag', 'alt' => get_string('edit'))));
+                $this->content->text .= $editrolelocal;
             }
-        }
 
-        ### verifica se e o tutor
-        if (!is_siteadmin() and !user_has_role_assignment($USER->id, $rolesecond)) {
-
-        }*/
-
-        $teachers = $this->get_teacher($role, $rolesecond);
-
-        if (!empty($teachers)) {
             foreach ($teachers as $teacher) {
                 $picture = '';
                 $picture = new user_picture($teacher);
@@ -101,7 +77,6 @@ class block_talkto extends block_base {
                 if($bodycolor == '') $bodycolor = '#CAE4FB';
                 if($buttoncolor == '') $buttoncolor = '#51A351';
 
-
                 //Render box
                 $now = strtotime(date("Y-m-d H:i:s"));
                 $lastacess = strtotime(date(gmdate("Y-m-d H:i:s", $teacher->lastaccess)));
@@ -112,28 +87,31 @@ class block_talkto extends block_base {
                 preg_replace('/\s+/i', ' ', $name);
                 $name = explode(" ", $teacher->firstname);
 
-                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
+                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5 panel-box"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
 
-                if ($secs < 350) $this->content->text .= '<p class="text-success"><i class="fas fa-circle"></i> ' . $edit . " " . $titlerole . ' (online) <i class="fas fa-headset"></i></p>';
-                else $this->content->text .= '<p class="text-danger">' . $edit . " " . $titlerole . ' (offline)</p>';
+                if ($secs < 350) $this->content->text .= '<p class="text-online"><i class="fas fa-circle"></i> ' . $edit . " " . $titlerole . ' (online) <i class="fas fa-headset"></i></p>';
+                else $this->content->text .= '<p class="text-offline">' . $edit . " " . $titlerole . ' (offline)</p>';
 
-                $this->content->text .= '<div style="background-color:'.$bodycolor.';border-radius: 0;"><div class="inner-all"><ul class="list-unstyled">';
+                $this->content->text .= '<div style="background-color:'.$bodycolor.';border-radius: 0;"><div class="inner-all"><br/><ul class="list-unstyled">';
                 $this->content->text .= '<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile . '" alt="Marint month"></li>';
                 $this->content->text .= '<li class="text-center"><h8 class=""><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto') . '</a></h8>';
                 $this->content->text .= '<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[count($name) - 1] . '</a></h5>';
-                $this->content->text .= '<li><a style="background-color: '.$buttoncolor.'; background:'.$buttoncolor.';" href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn text-center btn-block">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
+                if($USER->id != $teacher->id) {
+                    $this->content->text .= '<li><a style="color:#ffffff;background-color: ' . $buttoncolor . '; background:' . $buttoncolor . ';" href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn text-center btn-block no-hover">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
+                }
+                else {
+                    $this->content->text .= '<li><a style="color:#ffffff;background-color: ' . $buttoncolor . '; background:' . $buttoncolor . ';" data-target="" class="btn text-center btn-block no-hover">' . get_string('presentationme', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
+                }
                 $this->content->text .= '</ul></div>';
                 $this->content->text .= '</div></div></div>';
-
                 include 'chatbox.php';
-
                 $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                 $this->content->text .= '<div class="" role="document">';
                 $this->content->text .= '<div class="modal-content">';
                 $this->content->text .= '<div class="modal-body">';
                 $this->content->text .= '<button class="fas fa-window-close fa-1x" data-dismiss="modal" aria-label="Fechar"></button>';
                 $this->content->text .= '<div id="page-header">';
-                $this->content->text .= $html;
+                $this->content->text .= $chatbox;
                 $this->content->text .= '</div></div></div></div></div>';
 
                 $this->content->text .= '<div style="width: 60%;" id="modalSupervisor" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
@@ -149,14 +127,11 @@ class block_talkto extends block_base {
                 $this->content->text .= '<div class="description"><p></p>' . $teacher->email . '</div>';
                 $this->content->text .= '</a></div><div class="page-header-headings"><h6>' . $teacher->firstname . '</h6></div>';
                 $this->content->text .= '</div>';
-
                 $this->content->text .= '<div class="description"><p></p>' . $teacher->description . '</div>';
-
                 $this->content->text .= '</div></div></div></div></div>';
             }
         }else {
-            $this->content->text = '<div class="alert alert-danger" role="alert"><h8 class="alert-heading">Oops</h8><p class="mb-0">'.$teachers.'</p></div>';
-
+            $this->content->text .= '<div class="alert alert-danger" role="alert"><h8 class="alert-heading">Oops</h8><p class="mb-0">'.$teachers.'</p></div>';
         }
         return $this->content;
     }
@@ -212,10 +187,8 @@ class block_talkto extends block_base {
     public function get_teacher($role)
     {
         global $DB, $COURSE, $USER;
-        //Lista de usuarios com perfil de tutor
         list($usql, $uparams) = $DB->get_in_or_equal($role);
         $params = array($COURSE->id, CONTEXT_COURSE);
-        //print_r(array_values ($coursehasgroups));
 
         $select = 'SELECT DISTINCT u.id, u.firstname, u.lastname, u.lastaccess, u.picture, u.description, u.email ';
         $from = 'FROM {role_assignments} ra
@@ -223,43 +196,40 @@ class block_talkto extends block_base {
 		JOIN {user} u ON u.id = ra.userid ';
         $where = 'WHERE ((c.instanceid = ? AND c.contextlevel = ?))';
 
-        $params = array_merge($params, array($USER->id), $uparams);
-        $where .= ' AND userid != ? AND roleid ' . $usql;
+        $params = array_merge($params, $uparams);
+        $where .= ' AND roleid ' . $usql;
         $order = ' ORDER BY u.firstname ASC, u.lastname';
 
         $teachers = $DB->get_records_sql($select . $from . $where . $order, $params);
-        $coursehasgroups = groups_get_all_groups($COURSE->id);
 
-        #var_dump($teachers);
-
-        ### filtro para grupos ###
-        if (!empty($teachers)) {
-            if ($coursehasgroups) {
-                $groupteachers = array();
-                $usergroupings = groups_get_user_groups($COURSE->id, $USER->id);
-
-                #var_dump($usergroupings);
-
-                if (empty($usergroupings)) {
-                    return get_string('messageegrouperror', 'block_talkto');
-                } else {
-                    foreach ($usergroupings as $usergroups) {
-                        if (empty($usergroups)) {
-                            return get_string('messageegrouperror', 'block_talkto');
-                        } else {
-                            foreach ($usergroups as $usergroup) {
-                                foreach ($teachers as $teacher) {
-                                    if ((groups_is_member($usergroup, $teacher->id))) {
-                                        $groupteachers[$teacher->id] = $teacher;
+        if (get_config('talkto', 'usegroup')) {
+            $coursehasgroups = groups_get_all_groups($COURSE->id);
+            ### filtro para grupos ###
+            if (!empty($teachers)) {
+                if ($coursehasgroups) {
+                    $groupteachers = array();
+                    $usergroupings = groups_get_user_groups($COURSE->id, $USER->id);
+                    if (empty($usergroupings)) {
+                        return get_string('messageegrouperror', 'block_talkto');
+                    } else {
+                        foreach ($usergroupings as $usergroups) {
+                            if (empty($usergroups)) {
+                                return get_string('messageegrouperror', 'block_talkto');
+                            } else {
+                                foreach ($usergroups as $usergroup) {
+                                    foreach ($teachers as $teacher) {
+                                        if ((groups_is_member($usergroup, $teacher->id))) {
+                                            $groupteachers[$teacher->id] = $teacher;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    if (empty($groupteachers)) {
-                        return get_string('messageegrouperror', 'block_talkto');
-                    } else {
-                        $teachers = $groupteachers;
+                        if (empty($groupteachers)) {
+                            return get_string('messageegrouperror', 'block_talkto');
+                        } else {
+                            return $groupteachers;
+                        }
                     }
                 }
             }

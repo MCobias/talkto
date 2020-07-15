@@ -38,4 +38,4 @@ if ($userid) {
     }
 }
 
-$html = \core_message\helper::render_messaging_widget(false, $userid, $conversationid, $view);
+$chatbox = \core_message\helper::render_messaging_widget(false, $userid, $conversationid, $view);

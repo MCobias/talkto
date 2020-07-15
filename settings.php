@@ -31,7 +31,7 @@ $settings->add(new admin_setting_configcheckbox(
     'talkto/usegroup',
     get_string('settigsusegroup', 'block_talkto'),
     get_string('descsettigsusegroup', 'block_talkto'),
-    '1'
+    '0'
 ));
 
 $settings->add(new admin_setting_configtext(
