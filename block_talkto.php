@@ -196,7 +196,7 @@ class block_talkto extends block_base {
 		JOIN {user} u ON u.id = ra.userid ';
         $where = 'WHERE ((c.instanceid = ? AND c.contextlevel = ?))';
 
-        $params = array_merge($params, array(), $uparams);
+        $params = array_merge($params, array($USER->id), $uparams);
         $where .= ' AND userid != ? AND roleid ' . $usql;
         $order = ' ORDER BY u.firstname ASC, u.lastname';
 
