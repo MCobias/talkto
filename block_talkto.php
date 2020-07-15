@@ -23,9 +23,12 @@ class block_talkto extends block_base {
         $role = get_config('talkto', 'role');
         $this->content = new stdClass();
 
+        var_dump(get_config('talkto', 'isglobal'));
+
         if(!get_config('talkto', 'isglobal')){
             $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
-            $role = $settingsrolelocal->roleid;
+            if(!empty($settingsrolelocal))
+                $role = $settingsrolelocal->roleid;
         }
 
         $this->content->text = "";
@@ -41,6 +44,8 @@ class block_talkto extends block_base {
                 $editrolelocal = html_writer::link($editurl, html_writer::tag('span', '', array('class' => 'fas fa-2x fa-user-tag', 'alt' => get_string('edit'))));
                 $this->content->text .= $editrolelocal;
             }
+
+            var_dump($teachers);
 
             foreach ($teachers as $teacher) {
                 $picture = '';
@@ -87,17 +92,17 @@ class block_talkto extends block_base {
                 preg_replace('/\s+/i', ' ', $name);
                 $name = explode(" ", $teacher->firstname);
 
-                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5 panel-box"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
+                $this->content->text .= '<div class="row mb-lg-5"><div class="col-md-3 ml-lg-5 panel-box"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
 
                 if ($secs < 350) $this->content->text .= '<p class="text-online"><i class="fas fa-circle"></i> ' . $edit . " " . $titlerole . ' (online) <i class="fas fa-headset"></i></p>';
                 else $this->content->text .= '<p class="text-offline">' . $edit . " " . $titlerole . ' (offline)</p>';
 
                 $this->content->text .= '<div style="background-color:'.$bodycolor.';border-radius: 0;"><div class="inner-all"><br/><ul class="list-unstyled">';
                 $this->content->text .= '<li class="text-center"><img width="40%" class="img-circle img-bordered-primary" src="' . $profile . '" alt="Marint month"></li>';
-                $this->content->text .= '<li class="text-center"><h8 class=""><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . get_string('openprofile', 'block_talkto') . '</a></h8>';
+                $this->content->text .= '<li class="text-center"><h8 class=""><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor'.$teacher->id.'">' . get_string('openprofile', 'block_talkto') . '</a></h8>';
                 $this->content->text .= '<li class="text-center"><h5 class="text-capitalize"><a href="#" class="brand close-modal-small" data-toggle="modal" data-target="#modalSupervisor">' . $name[count($name) - 1] . '</a></h5>';
                 if($USER->id != $teacher->id) {
-                    $this->content->text .= '<li><a style="color:#ffffff;background-color: ' . $buttoncolor . '; background:' . $buttoncolor . ';" href="#" data-toggle="modal" data-target="#modalSupervisorChat" class="btn text-center btn-block no-hover">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
+                    $this->content->text .= '<li><a style="color:#ffffff;background-color: ' . $buttoncolor . '; background:' . $buttoncolor . ';" href="#" data-toggle="modal" data-target="#modalSupervisorChat'.$teacher->id.'" class="btn text-center btn-block no-hover">' . get_string('presentationother', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
                 }
                 else {
                     $this->content->text .= '<li><a style="color:#ffffff;background-color: ' . $buttoncolor . '; background:' . $buttoncolor . ';" data-target="" class="btn text-center btn-block no-hover">' . get_string('presentationme', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
@@ -105,7 +110,7 @@ class block_talkto extends block_base {
                 $this->content->text .= '</ul></div>';
                 $this->content->text .= '</div></div></div>';
                 include 'chatbox.php';
-                $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
+                $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat'.$teacher->id.'" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                 $this->content->text .= '<div class="" role="document">';
                 $this->content->text .= '<div class="modal-content">';
                 $this->content->text .= '<div class="modal-body">';
@@ -114,7 +119,7 @@ class block_talkto extends block_base {
                 $this->content->text .= $chatbox;
                 $this->content->text .= '</div></div></div></div></div>';
 
-                $this->content->text .= '<div style="width: 60%;" id="modalSupervisor" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
+                $this->content->text .= '<div style="width: 60%;" id="modalSupervisor'.$teacher->id.'" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                 $this->content->text .= '<div class="" role="document">';
                 $this->content->text .= '<div class="modal-content">';
                 $this->content->text .= '<div class="modal-body">';
@@ -196,8 +201,8 @@ class block_talkto extends block_base {
 		JOIN {user} u ON u.id = ra.userid ';
         $where = 'WHERE ((c.instanceid = ? AND c.contextlevel = ?))';
 
-        $params = array_merge($params, array($USER->id), $uparams);
-        $where .= ' AND userid != ? AND roleid ' . $usql;
+        $params = array_merge($params, $uparams);
+        $where .= ' AND roleid ' . $usql;
         $order = ' ORDER BY u.firstname ASC, u.lastname';
 
         $teachers = $DB->get_records_sql($select . $from . $where . $order, $params);
