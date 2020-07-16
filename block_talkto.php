@@ -20,10 +20,9 @@ class block_talkto extends block_base {
         if ($this->content !== null or !$this->view_only_course()) {
             return $this->content;
         }
+
         $role = get_config('talkto', 'role');
         $this->content = new stdClass();
-
-        var_dump(get_config('talkto', 'isglobal'));
 
         if(!get_config('talkto', 'isglobal')){
             $settingsrolelocal = $DB->get_record('block_talkto_role_course', ['courseid'=>$COURSE->id]);
