@@ -124,7 +124,7 @@ class block_talkto extends block_base {
                 $this->content->text .= '<button class="fas fa-window-close fa-2x pull-right" data-dismiss="modal" aria-label="Fechar"></button>';
                 $this->content->text .= '<div class="page-context-header">';
                 $this->content->text .= '<div class="page-header-image">';
-                $this->content->text .= '<a href="/ava/user/profile.php?id= ' . $teacher->id . '">';
+                $this->content->text .= '<a href="/user/profile.php?id= ' . $teacher->id . '">';
                 $this->content->text .= '<img style="width: 30%;" src="' . $profile . '">';
                 $this->content->text .= '<div class="description"><p></p>' . $teacher->email . '</div>';
                 $this->content->text .= '</a></div><div class="page-header-headings"><h6>' . $teacher->firstname . '</h6></div>';
