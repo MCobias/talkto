@@ -52,5 +52,5 @@ $settings->add(new admin_setting_configtext(
     'talkto/panelbuttoncolor',
     get_string('settigspanelbuttoncolor', 'block_talkto'),
     get_string('descsettigspanelbuttoncolor', 'block_talkto'),
-    '#302F51'
+    '#51A351'
 ));

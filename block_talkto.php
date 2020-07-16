@@ -44,8 +44,6 @@ class block_talkto extends block_base {
                 $this->content->text .= $editrolelocal;
             }
 
-            var_dump($teachers);
-
             foreach ($teachers as $teacher) {
                 $picture = '';
                 $picture = new user_picture($teacher);
