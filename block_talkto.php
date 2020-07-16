@@ -89,7 +89,7 @@ class block_talkto extends block_base {
                 preg_replace('/\s+/i', ' ', $name);
                 $name = explode(" ", $teacher->firstname);
 
-                $this->content->text .= '<div class="row mb-lg-5"><div class="col-md-3 ml-lg-5 panel-box"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
+                $this->content->text .= '<div class="row"><div class="col-md-3 ml-lg-5 panel-box"><div style="border: none;background-color: '.$headcolor.';vertical-align: top;box-shadow: 5px 5px 5px 0 #bdbdbd;">';
 
                 if ($secs < 350) $this->content->text .= '<p class="text-online"><i class="fas fa-circle"></i> ' . $edit . " " . $titlerole . ' (online) <i class="fas fa-headset"></i></p>';
                 else $this->content->text .= '<p class="text-offline">' . $edit . " " . $titlerole . ' (offline)</p>';
@@ -105,7 +105,7 @@ class block_talkto extends block_base {
                     $this->content->text .= '<li><a style="color:#ffffff;background-color: ' . $buttoncolor . '; background:' . $buttoncolor . ';" data-target="" class="btn text-center btn-block no-hover">' . get_string('presentationme', 'block_talkto') . ' ' . $titlerole . ' <span class="far fa-comment"></span></a></li>';
                 }
                 $this->content->text .= '</ul></div>';
-                $this->content->text .= '</div></div></div>';
+                $this->content->text .= '</div></div></div><br/>';
                 include 'chatbox.php';
                 $this->content->text .= '<div style="width: 60%;" id="modalSupervisorChat'.$teacher->id.'" class="modal modal-perfil fade hide" role="dialog" aria-hidden="true">';
                 $this->content->text .= '<div class="" role="document">';
